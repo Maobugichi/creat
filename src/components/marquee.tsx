@@ -24,20 +24,18 @@ export const VelocityMarquee = ({ children, baseVelocity = 100 }: MarqueeProps) 
     stiffness: 400
   });
   
-  // Transform scroll velocity to a speed multiplier
+
   const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], {
     clamp: false
   });
 
-  // Magic wrapping logic for infinite loop
-  // We allow the x value to grow indefinitely, but map it to a % range 
-  // (e.g., -20% to -45%) so it snaps back seamlessly.
+  
   const x = useTransform(baseX, (v) => `${wrap(-20, -45, v)}%`);
 
   const directionFactor = useRef<number>(1);
 
   useAnimationFrame((t, delta) => {
-    // Calculate move distance based on time (delta)
+    console.log(t)
     let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
 
     // Apply scroll velocity to the speed

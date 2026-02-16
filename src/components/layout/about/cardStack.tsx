@@ -38,11 +38,8 @@ const cards = [
 
 export const CardStack = () => {
   const container = useRef(null);
-  
-  // Detect mobile for the hybrid logic
-  const isMobile = useMediaQuery({ maxWidth: 767 });
-  
-  // Your existing iPad/Height logic
+    
+ 
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1024 });
   const isTallNarrow = useMediaQuery({ minHeight: 890, maxWidth: 500 });
   const isMidHeight = useMediaQuery({ minHeight: 790, maxHeight: 889 });
