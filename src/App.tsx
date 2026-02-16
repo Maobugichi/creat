@@ -1,5 +1,4 @@
 import './App.css'
-import { FeatureGrid } from './components/layout/featured/gridblocks'
 import { CardStack } from './components/layout/about/cardStack'
 import { FAQ } from './components/layout/faq'
 import { Footer } from './components/layout/footer/footer'
