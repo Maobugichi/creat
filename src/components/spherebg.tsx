@@ -18,7 +18,7 @@ export const SphereBg = () => {
     const width = mount.clientWidth;
     const height = mount.clientHeight;
 
-    // ─── Renderer ───────────────────────────────────────────────
+   
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));

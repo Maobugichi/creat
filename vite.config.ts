@@ -26,10 +26,6 @@ export default defineConfig({
           'react-vendor': ['react', 'react-dom'],
           'motion-vendor': ['framer-motion'],
 
-          'spline': ['@splinetool/react-spline'],
-          
-         
-          'physics': ['@splinetool/runtime'],
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
