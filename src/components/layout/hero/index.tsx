@@ -8,13 +8,13 @@ import { SphereBg } from "@/components/spherebg";
 
 export const Hero = () => {
   const containerRef = useRef(null);
-  const [shouldLoadSpline, setShouldLoadSpline] = useState(false);
+  const [shouldLoad3d, setShouldLoad3d] = useState(false);
 
  
   useEffect(() => {
    
     const timer = setTimeout(() => {
-      setShouldLoadSpline(true);
+      setShouldLoad3d(true);
     }, 1000);
     
     return () => clearTimeout(timer);
@@ -59,7 +59,7 @@ export const Hero = () => {
     >
      
       <div className="absolute inset-0 opacity-30 pointer-events-none">
-        {shouldLoadSpline ?
+        {shouldLoad3d ?
        
         <Suspense 
           fallback={
