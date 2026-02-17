@@ -75,6 +75,13 @@ export default defineConfig({
         assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
       },
     },
+     modulePreload: {
+      // ✅ Don't auto-inject <link rel="modulepreload"> for every chunk.
+      // Three.js won't be preloaded — it loads only when SphereBg is actually needed.
+      resolveDependencies: (_filename, deps) => {
+        return deps.filter(dep => !dep.includes('three-vendor'));
+      },
+    },
     chunkSizeWarningLimit: 2500,
   },
   esbuild: {

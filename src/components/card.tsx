@@ -1,4 +1,4 @@
-import { motion, useTransform } from "motion/react";
+import { m, useTransform } from "motion/react";
 import type { MotionValue } from "motion/react";
 
 interface CardProps {
@@ -12,23 +12,34 @@ interface CardProps {
   targetScale: number;
 }
 
+
+const IMG_INITIAL = { scale: 0.8, opacity: 0, y: "50%" } as const;
+const IMG_ANIMATE = { scale: 1, opacity: 0.8, y: "-50%" } as const;
+const IMG_TRANSITION = { duration: 0.6, delay: 0.2 } as const;
+
+
+const IMG_STYLE = { right: "-10%", top: "80%" } as const;
+
 export const Card = ({
   i, title, description, color, icon,
   progress, range, targetScale,
 }: CardProps) => {
 
-  // ✅ Clamped so first card (range[0]=0) doesn't use negative scroll values
-  const entryStart = Math.max(0, range[0] - 0.1);
-  const scale      = useTransform(progress, range, [1, targetScale]);
-  const cardEntryY = useTransform(progress, [entryStart, range[0]], [50, 0]);
+  
+  const entryStart  = Math.max(0, range[0] - 0.1);
+
+  
+  const scale       = useTransform(progress, range, [1, targetScale]);
+  const cardEntryY  = useTransform(progress, [entryStart, range[0]], [50, 0]);
   const cardOpacity = useTransform(progress, [entryStart, range[0]], [0, 1]);
 
-  // ✅ Computed once — i never changes for a given card instance
+ 
   const stackOffset = `calc(-2vh + ${i * 25}px)`;
+
 
   return (
     <div className="h-[70vh] md:h-screen flex items-center justify-center sticky top-[15vh] md:top-0">
-      <motion.div
+      <m.div
         style={{
           backgroundColor: color,
           scale,
@@ -37,21 +48,17 @@ export const Card = ({
           top: stackOffset,
           zIndex: i,
         }}
-        className="relative h-100 w-full md:w-[90%] max-w-175 rounded-3xl p-10 shadow-2xl origin-top border border-gray-200 overflow-hidden"
+        className="relative h-100 w-full md:w-[90%] max-w-175 rounded-3xl p-10 shadow-2xl will-change-transform origin-top border border-gray-200 overflow-hidden"
       >
-        <motion.img
+        <m.img
           src={icon}
-          alt=""
+          alt="3d icons"
           aria-hidden="true"
           className="absolute w-48 h-48 md:w-96 md:h-96 pointer-events-none z-0"
-          style={{
-            right: '-10%',
-            top: '80%',
-          }}
-          // ✅ Motion owns all transforms — no competing CSS transform string
-          initial={{ scale: 0.8, opacity: 0, y: '50%' }}
-          animate={{ scale: 1, opacity: 0.8, y: '-50%' }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          style={IMG_STYLE}
+          initial={IMG_INITIAL}
+          animate={IMG_ANIMATE}
+          transition={IMG_TRANSITION}
         />
 
         <div className="relative z-10">
@@ -66,7 +73,7 @@ export const Card = ({
         <div className="absolute bottom-10 font-heading left-10 text-6xl md:text-7xl font-black opacity-10 text-gray-800">
           0{i + 1}
         </div>
-      </motion.div>
+      </m.div>
     </div>
   );
 };

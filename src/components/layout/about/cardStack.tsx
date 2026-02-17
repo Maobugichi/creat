@@ -8,7 +8,7 @@ import setting from "../../../assets/3dicons-setting-dynamic-premium.avif";
 import rocket from "../../../assets/3dicons-rocket-iso-premium.webp";
 import { useBreakpoints } from "@/hooks/useBreakpoint";
 
-// ✅ Static data + derived values computed once at module level
+
 const cards = [
   { title: "The Vision",  description: "Defining the core purpose.",      color: "#EDE9FE", icon: idea    },
   { title: "The Design",  description: "Crafting the visual language.",    color: "#FCE7F3", icon: pen     },
@@ -26,10 +26,10 @@ const cardData = cards.map((card, i) => ({
 export const CardStack = () => {
   const container = useRef(null);
 
-  // ✅ Single hook, zero reflow, one re-render when viewport changes
+ 
   const { isTablet, isTallNarrow, isMidHeight, isThinHeight, isShortHeight } = useBreakpoints();
 
-  // ✅ Only recomputes when a breakpoint actually changes
+
   const multiplier = useMemo(() => {
     if (isThinHeight)  return 200;
     if (isTablet)      return 105;
@@ -39,7 +39,7 @@ export const CardStack = () => {
     return 100;
   }, [isTablet, isTallNarrow, isMidHeight, isThinHeight, isShortHeight]);
 
-  // ✅ Stable string reference — only changes when multiplier changes
+
   const sectionHeight = `${cardData.length * multiplier}vh`;
 
   const { scrollYProgress } = useScroll({

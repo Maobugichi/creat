@@ -1,9 +1,8 @@
-import { motion, useScroll, useTransform } from "motion/react";
+import { m, useScroll, useTransform } from "motion/react";
 import React, { useRef, Suspense, useState, useEffect } from "react";
 import { Btn } from "@/components/btn";
 
-
-const SphereBg  = React.lazy(() => import('@/components/spherebg'))
+const SphereBg = React.lazy(() => import('@/components/spherebg'));
 
 export const Hero = () => {
   const containerRef = useRef(null);
@@ -11,10 +10,13 @@ export const Hero = () => {
 
   useEffect(() => {
    
-    const timer = setTimeout(() => {
-      setShouldLoad3d(true);
-    }, 200);
-    return () => clearTimeout(timer);
+    if ('requestIdleCallback' in window) {
+      const id = requestIdleCallback(() => setShouldLoad3d(true), { timeout: 2000 });
+      return () => cancelIdleCallback(id);
+    } else {
+      const id = setTimeout(() => setShouldLoad3d(true), 200);
+      return () => clearTimeout(id);
+    }
   }, []);
 
   const { scrollYProgress } = useScroll({
@@ -23,8 +25,9 @@ export const Hero = () => {
   });
 
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.8], [1, 0.9]);
+  const scale   = useTransform(scrollYProgress, [0, 0.8], [1, 0.9]);
 
+ 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
@@ -35,8 +38,8 @@ export const Hero = () => {
   };
 
   return (
-    // ✅ Section starts fully visible — scroll transforms still work
-    <motion.section
+  
+    <m.section
       id="hero"
       ref={containerRef}
       style={{ opacity, scale }}
@@ -57,14 +60,14 @@ export const Hero = () => {
       </div>
 
       <div className="w-full max-w-6xl text-center mx-auto flex flex-col items-center justify-center gap-6 md:gap-10 relative z-10">
-        
+
         {/* ✅ h1 is plain HTML — renders immediately, LCP captured instantly */}
         <h1 className="text-6xl font-heading sm:text-6xl md:text-7xl lg:text-8xl tracking-tight leading-[1.1] font-bold">
           Product and 3D <br className="hidden md:block" /> design studio
         </h1>
 
-        {/* ✅ p and button still animate in — they're below LCP element so it's fine */}
-        <motion.p
+        {/* ✅ m.p — below LCP element so animating in is fine */}
+        <m.p
           variants={itemVariants}
           initial="hidden"
           animate="visible"
@@ -73,9 +76,9 @@ export const Hero = () => {
           Creating innovative products, and 3D designs that bring ideas to life.
           Our focus is on quality, creativity, and delivering exceptional visual
           experiences.
-        </motion.p>
+        </m.p>
 
-        <motion.div
+        <m.div
           variants={itemVariants}
           initial="hidden"
           animate="visible"
@@ -83,8 +86,8 @@ export const Hero = () => {
           className="mt-4"
         >
           <Btn>Get in Touch</Btn>
-        </motion.div>
+        </m.div>
       </div>
-    </motion.section>
+    </m.section>
   );
 };

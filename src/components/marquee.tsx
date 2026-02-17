@@ -1,44 +1,48 @@
 import { useRef } from "react";
 import {
-  motion,
+  m,
   useScroll,
   useSpring,
   useTransform,
   useMotionValue,
   useVelocity,
-  useAnimationFrame
+  useAnimationFrame,
 } from "motion/react";
 import { wrap } from "@/utils";
 
 interface MarqueeProps {
   children: React.ReactNode;
-  baseVelocity: number; // Negative for left, Positive for right
+  baseVelocity: number;
 }
+
+const SPRING_CONFIG = { damping: 50, stiffness: 400 } as const;
+
+
+const VELOCITY_INPUT  = [0, 1000];
+const VELOCITY_OUTPUT = [0, 5];
+const VELOCITY_OPTIONS = { clamp: false } as const;
 
 export const VelocityMarquee = ({ children, baseVelocity = 100 }: MarqueeProps) => {
   const baseX = useMotionValue(0);
   const { scrollY } = useScroll();
   const scrollVelocity = useVelocity(scrollY);
-  const smoothVelocity = useSpring(scrollVelocity, {
-    damping: 50,
-    stiffness: 400
-  });
-  
+  const smoothVelocity = useSpring(scrollVelocity, SPRING_CONFIG);
 
-  const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], {
-    clamp: false
-  });
+  const velocityFactor = useTransform(
+    smoothVelocity,
+    VELOCITY_INPUT,
+    VELOCITY_OUTPUT,
+    VELOCITY_OPTIONS
+  );
 
-  
   const x = useTransform(baseX, (v) => `${wrap(-20, -45, v)}%`);
 
   const directionFactor = useRef<number>(1);
 
-  useAnimationFrame((t, delta) => {
-    console.log(t)
+  useAnimationFrame((_t, delta) => {
+   
     let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
 
-    // Apply scroll velocity to the speed
     if (velocityFactor.get() < 0) {
       directionFactor.current = -1;
     } else if (velocityFactor.get() > 0) {
@@ -46,20 +50,18 @@ export const VelocityMarquee = ({ children, baseVelocity = 100 }: MarqueeProps) 
     }
 
     moveBy += directionFactor.current * moveBy * velocityFactor.get();
-
     baseX.set(baseX.get() + moveBy);
   });
 
   return (
     <div className="overflow-hidden whitespace-nowrap flex flex-nowrap">
-      <motion.div className="flex flex-nowrap gap-10" style={{ x }}>
-        {/* Render children multiple times to cover the screen width + buffer */}
-        {/* Adjust number of copies based on how wide your content is */}
+    
+      <m.div className="flex flex-nowrap gap-10" style={{ x }}>
         {children}
         {children}
         {children}
         {children}
-      </motion.div>
+      </m.div>
     </div>
   );
 };
