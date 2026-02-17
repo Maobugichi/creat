@@ -1,12 +1,14 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import path from 'node:path' // Use node:path for best ESM compatibility
-import fs from 'node:fs/promises' // Needed to read/write the file
+import path from 'node:path'
+import fs from 'node:fs/promises'
 import { visualizer } from 'rollup-plugin-visualizer'
 import Beasties from 'beasties'
 import type { Plugin } from 'vite';
 import type { OutputOptions, OutputBundle } from 'rollup';
+import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
+
 
 
 function criticalCSSPlugin(): Plugin {
@@ -54,6 +56,16 @@ export default defineConfig({
       brotliSize: true,
       filename: 'dist/stats.html',
     }),
+    ViteImageOptimizer({
+     
+      png: { quality: 80 },
+      jpeg: { quality: 80 },
+      webp: { quality: 80 },
+      avif: { quality: 70 },
+      
+      // Custom resize config for your specific needs
+      include: /\.(png|jpe?g|webp|avif)$/i,
+    }),
   ],
   resolve: {
     alias: {
@@ -76,8 +88,7 @@ export default defineConfig({
       },
     },
      modulePreload: {
-      // ✅ Don't auto-inject <link rel="modulepreload"> for every chunk.
-      // Three.js won't be preloaded — it loads only when SphereBg is actually needed.
+     
       resolveDependencies: (_filename, deps) => {
         return deps.filter(dep => !dep.includes('three-vendor'));
       },

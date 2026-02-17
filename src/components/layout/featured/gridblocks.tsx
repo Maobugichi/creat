@@ -1,9 +1,9 @@
 import { m, useInView, useMotionValue, useSpring, useTransform } from "motion/react";
 import { useEffect, useRef } from "react";
-import trophy from "../../../assets/3dicons-trophy-iso-premium.webp";
-import heart from "../../../assets/3dicons-notify-heart-iso-premium.webp";
-import clock from "../../../assets/3dicons-clock-iso-premium.webp";
-import rocket from "../../../assets/3dicons-rocket-iso-premium.webp";
+import trophy from "../../../assets/3dicons-trophy-iso-premium-optimized.webp";
+import heart from "../../../assets/3dicons-notify-heart-iso-premium-optimized.webp";
+import clock from "../../../assets/3dicons-clock-iso-premium-optimized.webp";
+import rocket from "../../../assets/3dicons-rocket-iso-premium-optimized.webp";
 import { Btn } from "@/components/btn";
 import { useBreakpoints } from "@/hooks/useBreakpoint";
 
