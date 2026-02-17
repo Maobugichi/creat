@@ -4,14 +4,17 @@ import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
 import { visualizer } from 'rollup-plugin-visualizer'
 
-
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(), visualizer({
+  plugins: [
+    react(),
+    tailwindcss(),
+    visualizer({
       open: true,
       gzipSize: true,
       brotliSize: true,
-    })],
+    }),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -19,13 +22,13 @@ export default defineConfig({
   },
   build: {
     cssCodeSplit: true,
-    minify: 'esbuild', // Use esbuild instead
+    minify: 'esbuild',
     rollupOptions: {
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
           'motion-vendor': ['framer-motion'],
-
+          'three-vendor': ['three'],
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
@@ -35,7 +38,7 @@ export default defineConfig({
     chunkSizeWarningLimit: 2500,
   },
   esbuild: {
-    drop: ['console', 'debugger'], // Remove console.logs with esbuild
+    drop: ['console', 'debugger'],
   },
   css: {
     devSourcemap: true,
