@@ -1,9 +1,9 @@
 import { motion, useInView, useMotionValue, useSpring, useTransform } from "motion/react";
 import { useEffect, useRef } from "react";
-import trophy from "../../../assets/3dicons-trophy-iso-premium.png";
-import heart from "../../../assets/3dicons-notify-heart-iso-premium.png";
-import clock from "../../../assets/3dicons-clock-iso-premium.png";
-import rocket from "../../../assets/3dicons-rocket-iso-premium.png";
+import trophy from "../../../assets/3dicons-trophy-iso-premium.webp";
+import heart from "../../../assets/3dicons-notify-heart-iso-premium.webp";
+import clock from "../../../assets/3dicons-clock-iso-premium.webp";
+import rocket from "../../../assets/3dicons-rocket-iso-premium.webp";
 import { Btn } from "@/components/btn";
 import { useMediaQuery } from "react-responsive";
 

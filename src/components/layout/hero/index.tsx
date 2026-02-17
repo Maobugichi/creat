@@ -1,12 +1,23 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, lazy, Suspense } from "react";
+import { useRef, lazy, Suspense, useState, useEffect } from "react";
 import { Btn } from "@/components/btn";
 
-// Lazy load Spline for better performance
+
 const Spline = lazy(() => import('@splinetool/react-spline'));
 
 export const Hero = () => {
   const containerRef = useRef(null);
+  const [shouldLoadSpline, setShouldLoadSpline] = useState(false);
+
+ 
+  useEffect(() => {
+   
+    const timer = setTimeout(() => {
+      setShouldLoadSpline(true);
+    }, 1000);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   // Scroll-linked fade out logic
   const { scrollYProgress } = useScroll({
@@ -47,6 +58,8 @@ export const Hero = () => {
     >
      
       <div className="absolute inset-0 opacity-30 pointer-events-none">
+        {shouldLoadSpline ?
+       
         <Suspense 
           fallback={
             <div className="absolute inset-0 bg-linear-to-br from-zinc-900 via-zinc-800 to-black animate-pulse" />
@@ -62,7 +75,7 @@ export const Hero = () => {
               left: 0
             }}
           />
-        </Suspense>
+        </Suspense>  : <div className="absolute inset-0 bg-linear-to-br from-zinc-900 via-zinc-800 to-black" />}
       </div>
 
      

@@ -1,33 +1,35 @@
 import { motion, useTransform, type MotionValue } from "motion/react";
+import { useMediaQuery } from "react-responsive";
 
 interface HighlightsProps {
   smoothProgress: MotionValue<number>;
 }
 
 export const Highlights = ({ smoothProgress }: HighlightsProps) => {
-  // CONFIGURATION:
-  // We compress the entire sequence to finish by 0.35. 
-  // This leaves a 0.05 buffer before the cards (at 0.4) take over,
-  // ensuring the last sentence is fully visible before the layout shifts.
+  const isDesktop = useMediaQuery({ minWidth: 768 });
 
-  // 1. Starts visible, holds till 0.05, fades out by 0.08
-  const opacity1 = useTransform(smoothProgress, [0, 0.05, 0.08], [1, 1, 0.1]);
+  // Desktop ranges - aligned with card positions
+  const desktopOpacity1 = useTransform(smoothProgress, [0, 0.2, 0.25], [1, 1, 0.3]);
+  const desktopOpacity2 = useTransform(smoothProgress, [0.2, 0.25, 0.45, 0.5], [0.3, 1, 1, 0.3]);
+  const desktopOpacity3 = useTransform(smoothProgress, [0.45, 0.5, 0.7, 0.75], [0.3, 1, 1, 0.3]);
+  const desktopOpacity4 = useTransform(smoothProgress, [0.7, 0.75], [0.3, 1]);
 
-  // 2. Enters fast at 0.08, holds till 0.14, fades out by 0.17
-  const opacity2 = useTransform(smoothProgress, [0.08, 0.11, 0.14, 0.17], [0.1, 1, 1, 0.1]);
+  // Mobile ranges - faster transitions through the content
+  const mobileOpacity1 = useTransform(smoothProgress, [0, 0.05, 0.08], [1, 1, 0.1]);
+  const mobileOpacity2 = useTransform(smoothProgress, [0.08, 0.11, 0.14, 0.17], [0.1, 1, 1, 0.1]);
+  const mobileOpacity3 = useTransform(smoothProgress, [0.17, 0.20, 0.23, 0.26], [0.1, 1, 1, 0.1]);
+  const mobileOpacity4 = useTransform(smoothProgress, [0.26, 0.29], [0.1, 1]);
 
-  // 3. Enters fast at 0.17, holds till 0.23, fades out by 0.26
-  const opacity3 = useTransform(smoothProgress, [0.17, 0.20, 0.23, 0.26], [0.1, 1, 1, 0.1]);
+  // Select the appropriate opacity values based on screen size
+  const opacity1 = isDesktop ? desktopOpacity1 : mobileOpacity1;
+  const opacity2 = isDesktop ? desktopOpacity2 : mobileOpacity2;
+  const opacity3 = isDesktop ? desktopOpacity3 : mobileOpacity3;
+  const opacity4 = isDesktop ? desktopOpacity4 : mobileOpacity4;
 
-  // 4. Enters fast at 0.26, fully visible by 0.29. 
-  // Stays visible until the cards cover it (0.4+).
-  const opacity4 = useTransform(smoothProgress, [0.26, 0.29], [0.1, 1]);
-
-  // Added transition-colors for a smoother (but still sharp) feel
-  const textClass = "font-body border-b-2 border-black/20 pb-6 mb-6 transition-colors duration-200";
+  const textClass = "font-body border-b-2 border-black/20 pb-6 mb-6 transition-opacity";
 
   return (
-    <div className="text-xl tracking-wide leading-relaxed max-w-md flex flex-col mb-10 md:mb-0">
+    <div className="text-xl tracking-wide leading-relaxed max-w-md flex flex-col mb-20 md:mb-0">
       <motion.p style={{ opacity: opacity1 }} className={textClass}>
         We're a bunch of creatives who love blending art and tech to build experiences that actually make people feel something.
       </motion.p>

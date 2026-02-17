@@ -2,10 +2,10 @@ import { useScroll, useSpring } from "motion/react";
 import { useRef } from "react";
 import { Card } from "@/components/card";
 import { Highlights } from "./highlights";
-import idea from "../../../assets/3dicons-target-dynamic-premium.png"
-import pen from "../../../assets/3dicons-painting-brush-dynamic-premium.png"
-import setting from "../../../assets/3dicons-setting-dynamic-premium.png";
-import rocket from "../../../assets/3dicons-rocket-iso-premium.png";
+import idea from "../../../assets/3dicons-target-dynamic-premium.avif"
+import pen from "../../../assets/3dicons-painting-brush-dynamic-premium.avif"
+import setting from "../../../assets/3dicons-setting-dynamic-premium.avif";
+import rocket from "../../../assets/3dicons-rocket-iso-premium.webp";
 import { useMediaQuery } from "react-responsive";
 
 
@@ -70,7 +70,7 @@ export const CardStack = () => {
   return (
     <section 
       ref={container} 
-      className="relative flex flex-col pt-20 md:flex-row md:gap-10 px-5"
+      className="relative flex flex-col pt-20 md:flex-row md:gap-10 px-5 md:px-20"
       style={{ height: `${cards.length * multiplier}vh` }}
     >
      
