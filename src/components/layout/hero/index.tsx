@@ -1,14 +1,16 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, Suspense, useState, useEffect } from "react";
+import React, { useRef, Suspense, useState, useEffect } from "react";
 import { Btn } from "@/components/btn";
-import { SphereBg } from "@/components/spherebg";
+
+
+const SphereBg  = React.lazy(() => import('@/components/spherebg'))
 
 export const Hero = () => {
   const containerRef = useRef(null);
   const [shouldLoad3d, setShouldLoad3d] = useState(false);
 
   useEffect(() => {
-    // Reduced to 200ms — just enough to not block initial paint
+   
     const timer = setTimeout(() => {
       setShouldLoad3d(true);
     }, 200);

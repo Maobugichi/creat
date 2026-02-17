@@ -1,12 +1,12 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@source "../src/**/*.{ts,tsx}";
 
 @import '@fontsource/inter/latin-400.css';
 @import '@fontsource/inter/latin-500.css';
 @import '@fontsource/space-grotesk/latin-600.css';
 @import '@fontsource/space-grotesk/latin-700.css';
-
 
 @theme {
   --font-heading: 'Space Grotesk', sans-serif;
@@ -127,23 +127,16 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring/50; /* ✅ removed duplicate */
   }
   body {
-    @apply bg-background text-foreground;
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground; /* ✅ removed duplicate */
   }
 }
 
 @layer utilities {
   .silver-gradient {
-    background: linear-gradient(
-      180deg,
-      #ffffff 0%,
-      #a1a1a1 50%,
-      #ffffff 100%
-    );
+    background: linear-gradient(180deg, #ffffff 0%, #a1a1a1 50%, #ffffff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

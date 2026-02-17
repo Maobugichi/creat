@@ -8,7 +8,7 @@ interface Sphere {
   rotationSpeed: THREE.Vector3;
 }
 
-export const SphereBg = () => {
+const SphereBg = () => {
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -246,3 +246,5 @@ export const SphereBg = () => {
     />
   );
 };
+
+export default SphereBg
