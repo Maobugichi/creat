@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, lazy, Suspense, useState, useEffect } from "react";
+import { useRef, Suspense, useState, useEffect } from "react";
 import { Btn } from "@/components/btn";
 import { SphereBg } from "@/components/spherebg";
 
