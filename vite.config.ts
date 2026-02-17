@@ -63,7 +63,7 @@ export default defineConfig({
       webp: { quality: 80 },
       avif: { quality: 70 },
       
-      // Custom resize config for your specific needs
+     
       include: /\.(png|jpe?g|webp|avif)$/i,
     }),
   ],
@@ -80,7 +80,6 @@ export default defineConfig({
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
           'motion-vendor': ['framer-motion'],
-          'three-vendor': ['three'],
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',

@@ -2,7 +2,7 @@ import sharp from 'sharp';
 import { readdirSync, existsSync, statSync } from 'fs';
 import { join, basename, extname } from 'path';
 
-// ✅ Map of icon names to their largest displayed size
+
 const sizes = {
   'trophy': 288,
   'clock': 288,
@@ -15,16 +15,16 @@ const sizes = {
   'notify': 288,
 };
 
-// ✅ Adjust this to match your project structure
+
 const assetsDir = './src/assets';  // or './src/assets' or './public/assets'
 
-// Recursively find all image files
+
 function findImages(dir) {
   const files = [];
   
   if (!existsSync(dir)) {
-    console.error(`❌ Directory ${dir} does not exist`);
-    console.log('💡 Try one of these paths:');
+    console.error(`Directory ${dir} does not exist`);
+    console.log('Try one of these paths:');
     console.log('   - ./src/assets');
     console.log('   - ./public/assets');
     return files;
