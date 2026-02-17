@@ -1,9 +1,10 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, lazy, Suspense, useState, useEffect } from "react";
 import { Btn } from "@/components/btn";
+import { SphereBg } from "@/components/spherebg";
 
 
-const Spline = lazy(() => import('@splinetool/react-spline'));
+
 
 export const Hero = () => {
   const containerRef = useRef(null);
@@ -65,16 +66,7 @@ export const Hero = () => {
             <div className="absolute inset-0 bg-linear-to-br from-zinc-900 via-zinc-800 to-black animate-pulse" />
           }
         >
-          <Spline 
-            scene="https://prod.spline.design/cCEEvd5vKffQimNh/scene.splinecode"
-            style={{ 
-              width: '100%', 
-              height: '100%',
-              position: 'absolute',
-              top: 0,
-              left: 0
-            }}
-          />
+          <SphereBg />
         </Suspense>  : <div className="absolute inset-0 bg-linear-to-br from-zinc-900 via-zinc-800 to-black" />}
       </div>
 
