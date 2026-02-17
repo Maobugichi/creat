@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "motion/react";
 import React, { useRef, Suspense, useState, useEffect } from "react";
 import { Btn } from "@/components/btn";
 
