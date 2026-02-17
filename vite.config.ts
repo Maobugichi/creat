@@ -1,38 +1,55 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import path from 'path'
+import path from 'node:path' // Use node:path for best ESM compatibility
+import fs from 'node:fs/promises' // Needed to read/write the file
 import { visualizer } from 'rollup-plugin-visualizer'
+import Beasties from 'beasties'
+import type { Plugin } from 'vite';
+import type { OutputOptions, OutputBundle } from 'rollup';
 
-function preloadCSSPlugin() {
+
+function criticalCSSPlugin(): Plugin {
   return {
-    name: 'preload-css',
-    transformIndexHtml(
-      html: string,
-      ctx: { bundle?: Record<string, unknown>; server?: unknown }
-    ) {
-      // ✅ Skip entirely in dev mode
-      if (ctx.server) return html
-      if (!ctx.bundle) return html
+    name: 'critical-css',
+    apply: 'build', 
+    async writeBundle(options: OutputOptions, _bundle: OutputBundle) {
+      
+      const outDir = options.dir || 'dist';
+      const htmlFilePath = path.resolve(outDir, 'index.html');
 
-      const cssFiles = Object.keys(ctx.bundle).filter(f => f.endsWith('.css'))
-      if (cssFiles.length === 0) return html
+      try {
+        // Check if the file exists before reading
+        await fs.access(htmlFilePath);
+        const html = await fs.readFile(htmlFilePath, 'utf-8');
 
-      const preloadTags = cssFiles
-        .map(f => `<link rel="preload" as="style" href="/${f}">`)
-        .join('\n    ')
+        const beasties = new Beasties({
+          path: outDir,
+          publicPath: '/',
+          preload: 'swap',
+          pruneSource: false,
+          inlineFonts: false,
+        });
 
-      return html.replace('<head>', `<head>\n    ${preloadTags}`)
+        const processedHtml = await beasties.process(html);
+        await fs.writeFile(htmlFilePath, processedHtml);
+        
+        console.log('✅ Critical CSS injected.');
+      } catch (e) {
+        // If index.html doesn't exist (e.g., SSR builds), just skip
+        console.warn('Critical CSS skip: index.html not found in output directory.');
+      }
     },
-  }
+  };
 }
+
 export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    preloadCSSPlugin(),
+    criticalCSSPlugin(),
     visualizer({
-      open: false, // don't auto-open on every build in CI/prod
+      open: false,
       gzipSize: true,
       brotliSize: true,
       filename: 'dist/stats.html',
