@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
-import type { BufferGeometry } from "three";
-import type { MeshStandardMaterial as MeshStandardMaterialType } from "three";
+;
 
 interface SphereInstance {
   index: number;
