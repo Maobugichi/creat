@@ -10,18 +10,46 @@ const FAQ = lazy(() => import('./components/layout/faq').then(m => ({ default: m
 const Footer = lazy(() => import('./components/layout/footer/footer').then(m => ({ default: m.Footer })))
 
 function App() {
+  const [showBelowFold, setShowBelowFold] = useState(false);
   const [showFAQ, setShowFAQ] = useState(false);
+  const belowFoldTriggerRef = useRef<HTMLDivElement>(null);
   const faqTriggerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Only mount FAQ when user scrolls near it to avoid forced reflows during initial load
+    // ✅ Defer ALL below-fold content until 3 seconds OR user scrolls
+    const timer = setTimeout(() => {
+      setShowBelowFold(true);
+    }, 3000);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setShowBelowFold(true);
+          clearTimeout(timer); // Cancel timer if user scrolls early
+        }
+      },
+      { rootMargin: '400px' }
+    );
+
+    if (belowFoldTriggerRef.current) {
+      observer.observe(belowFoldTriggerRef.current);
+    }
+
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    // FAQ loads separately when user scrolls near it
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
           setShowFAQ(true);
         }
       },
-      { rootMargin: '400px' } // Start loading 400px before FAQ enters viewport
+      { rootMargin: '400px' }
     );
 
     if (faqTriggerRef.current) {
@@ -36,22 +64,26 @@ function App() {
       <Navbar />
       <Hero />
       
-      <Suspense fallback={<div className="h-screen" />}>
-        <CardStack />
-        <MarqueeSection />
-        <Featured />
-        
-        {/* Invisible trigger element that activates FAQ loading */}
-        <div ref={faqTriggerRef} className="h-1" aria-hidden="true" />
-        
-        {/* FAQ and Footer only mount when user scrolls near them */}
-        {showFAQ && (
-          <>
-            <FAQ />
-            <Footer />
-          </>
-        )}
-      </Suspense>
+      {/* Trigger for below-fold content */}
+      <div ref={belowFoldTriggerRef} className="h-1" aria-hidden="true" />
+      
+      {showBelowFold && (
+        <Suspense fallback={<div className="min-h-screen" />}>
+          <CardStack />
+          <MarqueeSection />
+          <Featured />
+        </Suspense>
+      )}
+      
+      {/* Separate trigger for FAQ */}
+      <div ref={faqTriggerRef} className="h-1" aria-hidden="true" />
+      
+      {showFAQ && (
+        <Suspense fallback={<div className="min-h-screen" />}>
+          <FAQ />
+          <Footer />
+        </Suspense>
+      )}
     </main>
   )
 }

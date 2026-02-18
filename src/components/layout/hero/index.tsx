@@ -11,10 +11,10 @@ export const Hero = () => {
   useEffect(() => {
     // Defer 3D background loading
     if ('requestIdleCallback' in window) {
-      const id = requestIdleCallback(() => setShouldLoad3d(true), { timeout: 3000 });
+      const id = requestIdleCallback(() => setShouldLoad3d(true), { timeout: 5000 });
       return () => cancelIdleCallback(id);
     } else {
-      const id = setTimeout(() => setShouldLoad3d(true), 3000);
+      const id = setTimeout(() => setShouldLoad3d(true), 5000);
       return () => clearTimeout(id);
     }
   }, []);
