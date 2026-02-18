@@ -9,7 +9,7 @@
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
-  font-display: optional;
+  font-display: swap;
   src: url('/assets/woff2/inter-latin-400-normal-C38fXH4l.woff2') format('woff2');
 }
 
@@ -17,7 +17,7 @@
   font-family: 'Inter';
   font-style: normal;
   font-weight: 500;
-  font-display: optional;
+  font-display: swap;
   src: url('/assets/woff2/inter-latin-500-normal-Cerq10X2.woff2') format('woff2');
 }
 
@@ -25,7 +25,7 @@
   font-family: 'Space Grotesk';
   font-style: normal;
   font-weight: 600;
-  font-display: optional;
+  font-display: swap;
   src: url('/assets/woff2/space-grotesk-latin-600-normal-DjKNqYRj.woff2') format('woff2');
 }
 
@@ -33,7 +33,7 @@
   font-family: 'Space Grotesk';
   font-style: normal;
   font-weight: 700;
-  font-display: optional;
+  font-display: swap;
   src: url('/assets/woff2/space-grotesk-latin-700-normal-RjhwGPKo.woff2') format('woff2');
 }
 
