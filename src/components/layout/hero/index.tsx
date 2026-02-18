@@ -20,7 +20,7 @@ export const Hero = () => {
   }, []);
 
   useEffect(() => {
-    // Defer animations until after first paint
+  
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         setShouldAnimate(true);
@@ -48,17 +48,17 @@ export const Hero = () => {
       </div>
 
       <div className="w-full max-w-6xl text-center mx-auto flex flex-col items-center justify-center gap-6 md:gap-10 relative z-10">
-        {/* ✅ h1 is plain HTML — LCP happens instantly */}
+       
         <h1 className="text-6xl font-heading sm:text-6xl md:text-7xl lg:text-8xl tracking-tight leading-[1.1] font-bold">
           Product and 3D <br className="hidden md:block" /> design studio
         </h1>
 
-        {/* ✅ Animations only run AFTER shouldAnimate is true (after first paint) */}
+       
         <m.p
           initial={false}
           animate={shouldAnimate ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="text-xl font-body md:text-xl text-gray-400 max-w-2xl w-full leading-relaxed"
+          className="text-xl font-body md:text-2xl text-gray-400 max-w-2xl w-full leading-relaxed"
         >
           Creating innovative products, and 3D designs that bring ideas to life.
           Our focus is on quality, creativity, and delivering exceptional visual
