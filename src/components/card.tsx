@@ -70,7 +70,9 @@ export const Card = ({
           </p>
         </div>
 
-        <div className="absolute bottom-10 font-heading left-10 text-6xl md:text-7xl font-black opacity-10 text-gray-800">
+        <div 
+         aria-hidden="true"
+         className="absolute bottom-10 font-heading left-10 text-6xl md:text-7xl font-black opacity-10 text-gray-800">
           0{i + 1}
         </div>
       </m.div>
