@@ -73,27 +73,61 @@ export default defineConfig({
     },
   },
   build: {
-    cssCodeSplit: true,
-    minify: 'esbuild',
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom'],
-          'motion-vendor': ['framer-motion'],
-        },
-        chunkFileNames: 'assets/js/[name]-[hash].js',
-        entryFileNames: 'assets/js/[name]-[hash].js',
-        assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
+  cssCodeSplit: true,
+  minify: 'esbuild',
+  rollupOptions: {
+    output: {
+      manualChunks(id) {
+        // React ecosystem
+        if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
+          return 'react-vendor';
+        }
+        
+        // Motion/Framer
+        if (id.includes('node_modules/motion') || id.includes('node_modules/framer-motion')) {
+          return 'motion-vendor';
+        }
+        
+        // Three.js
+        if (id.includes('node_modules/three')) {
+          return 'three-vendor';
+        }
+        
+        // Split each lazy-loaded section into its own chunk
+        if (id.includes('src/components/layout/about')) {
+          return 'about';
+        }
+        if (id.includes('src/components/layout/featured')) {
+          return 'featured';
+        }
+        if (id.includes('src/components/layout/footer')) {
+          return 'footer';
+        }
+        if (id.includes('src/components/layout/faq')) {
+          return 'faq';
+        }
+        if (id.includes('src/components/marqsection')) {
+          return 'marqsection';
+        }
+        
+        // Everything else goes to default chunks
+        return undefined;
       },
+      chunkFileNames: 'assets/js/[name]-[hash].js',
+      entryFileNames: 'assets/js/[name]-[hash].js',
+      assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
     },
-     modulePreload: {
-     
-      resolveDependencies: (_filename, deps) => {
-        return deps.filter(dep => !dep.includes('three-vendor'));
-      },
-    },
-    chunkSizeWarningLimit: 2500,
   },
+  modulePreload: {
+    resolveDependencies: (_filename, deps) => {
+      return deps.filter(dep => 
+        !dep.includes('three-vendor') && 
+        !dep.includes('motion-vendor')
+      );
+    },
+  },
+  chunkSizeWarningLimit: 2500,
+},
   esbuild: {
     drop: ['console', 'debugger'],
   },
