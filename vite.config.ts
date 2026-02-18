@@ -88,12 +88,7 @@ export default defineConfig({
           return 'motion-vendor';
         }
         
-        // Three.js
-        if (id.includes('node_modules/three')) {
-          return 'three-vendor';
-        }
-        
-        // Split each lazy-loaded section into its own chunk
+     
         if (id.includes('src/components/layout/about')) {
           return 'about';
         }
@@ -118,14 +113,7 @@ export default defineConfig({
       assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
     },
   },
-  modulePreload: {
-    resolveDependencies: (_filename, deps) => {
-      return deps.filter(dep => 
-        !dep.includes('three-vendor') && 
-        !dep.includes('motion-vendor')
-      );
-    },
-  },
+  modulePreload: false,
   chunkSizeWarningLimit: 2500,
 },
   esbuild: {
