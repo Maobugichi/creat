@@ -2,7 +2,7 @@ import { VelocityMarquee } from "./marquee";
 
 export const MarqueeSection = () => {
   return (
-    <section className=" bg-black/50 text-white overflow-hidden">
+    <section className=" bg-black/80 text-white overflow-hidden">
       <VelocityMarquee baseVelocity={-5}>
         <span className="text-9xl font-black uppercase tracking-tighter mr-10 opacity-70">
           User Experience • Creative Direction •

@@ -73,18 +73,14 @@ const BAR_TWO_CLOSED = { opacity: 1,  scale: 1       } as const;
 const BAR_THREE_OPEN   = { rotate: -45, y: 10, x: -30 } as const;
 const BAR_THREE_CLOSED = { rotate: 0,   y: 0,  x: 0   } as const;
 
-// ✅ Static style object — originX/Y never change
 const MENU_STYLE = { originX: 1, originY: 0 } as const;
 
-// ✅ words array hoisted — was recreated on every render
+
 const words = ["works", "featured", "about", "contract"];
 
 export const Hamburger = () => {
   const [isOpen, setOpen] = useState(false);
 
-  // ✅ Toggle handler stable — useCallback equivalent via inline referencing
-  // a setter (React guarantees setState is stable so this is safe as-is).
-  // No useMemo/useCallback needed since setOpen reference is already stable.
   const toggle = () => setOpen((prev) => !prev);
 
   // ✅ Select precomputed transition by reference — no object allocation
@@ -100,7 +96,7 @@ export const Hamburger = () => {
       onClick={toggle}
       className="fixed top-4 right-4 z-50 shadow-2xl overflow-hidden touch-none"
     >
-      <button className="absolute top-0 right-0 w-15 h-15 flex flex-col items-center justify-center gap-1.5 focus:outline-none z-10">
+      <button aria-label="Open menu" className="absolute top-0 right-0 w-15 h-15 flex flex-col items-center justify-center gap-1.5 focus:outline-none z-10">
         <m.span
           animate={isOpen ? BAR_ONE_OPEN : BAR_ONE_CLOSED}
           transition={iconTransition}

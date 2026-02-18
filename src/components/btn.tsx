@@ -18,6 +18,7 @@ export const Btn = ({
 
   return (
     <button
+      aria-label="call to actionn"
       className={`flex font-heading items-center gap-2 border-2 border-black px-7 bg-white tracking-wide rounded-full text-black backdrop-blur-md font-semibold ${sizeStyles[size]} ${className ?? ""}`}
     >
       {children}   <ArrowUpRight size={24} weight="bold" />

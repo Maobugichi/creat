@@ -61,7 +61,7 @@ export const CardStack = () => {
     >
       <div className="md:w-1/2 md:sticky top-[10vh] h-fit">
         <h2 className="font-heading text-5xl font-bold mb-6 leading-tight">
-          Guess <span className="text-gray-400">what we can do</span>
+          Guess <span className="text-gray-600">what we can do</span>
         </h2>
         <Highlights smoothProgress={smoothProgress} />
       </div>
