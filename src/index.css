@@ -3,15 +3,46 @@
 @import "shadcn/tailwind.css";
 @source "../src/**/*.{ts,tsx}";
 
-@import '@fontsource/inter/latin-400.css';
-@import '@fontsource/inter/latin-500.css';
-@import '@fontsource/space-grotesk/latin-600.css';
-@import '@fontsource/space-grotesk/latin-700.css';
+
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/woff2/inter-latin-400-normal-C38fXH4l.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/assets/woff2/inter-latin-500-normal-Cerq10X2.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/assets/woff2/space-grotesk-latin-600-normal-DjKNqYRj.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/assets/woff2/space-grotesk-latin-700-normal-RjhwGPKo.woff2') format('woff2');
+}
 
 @theme {
   --font-heading: 'Space Grotesk', sans-serif;
   --font-body: 'Inter', sans-serif;
 }
+
+
 
 @custom-variant dark (&:is(.dark *));
 
