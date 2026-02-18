@@ -1,8 +1,7 @@
 import { m, type Variants, type Transition } from "motion/react";
 import { useMemo } from "react";
 
-// ✅ All static variants and transitions hoisted to module level —
-// none of these depend on props or state.
+
 const letterTransition: Transition = {
   type: "spring",
   stiffness: 250,
@@ -44,24 +43,17 @@ const wordWrapperVariant: Variants = {
   },
 };
 
-// ✅ Static style objects hoisted — both lineHeight:1 objects were new
-// references every render, passed to two different m.* elements.
+
 const LINE_HEIGHT_STYLE = { lineHeight: 1 } as const;
 
-// ✅ Precompute per-letter transitions up to a reasonable word length.
-// The original did { ...letterTransition, delay: i * 0.04 } inside .map(),
-// which spread letterTransition into a brand new object for every letter
-// on every render. For a 8-letter word that's 16 new transition objects
-// per render (2 m.a per letter), and Motion re-evaluates each one.
-// Precomputing up to 20 chars means zero allocations during render.
+
 const LETTER_TRANSITIONS: Transition[] = Array.from({ length: 20 }, (_, i) => ({
   ...letterTransition,
   delay: i * 0.04,
 }));
 
 export const RollingText = ({ word }: { word: string }) => {
-  // ✅ Split once per word change — word is a stable prop from a hoisted
-  // array so this effectively never re-runs.
+  
   const chars = useMemo(() => word.split(""), [word]);
 
   return (

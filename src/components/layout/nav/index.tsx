@@ -37,7 +37,7 @@ export const Navbar = () => {
         className="flex justify-end w-[80%] md:w-auto items-center gap-6 pointer-events-auto"
       >
         <MoonStars size={30} weight="bold" />
-        <button className="flex items-center gap-2 border-2 border-black md:px-7 md:py-3 px-4 py-4 font-semibold text-xl tracking-wide rounded-full bg-white/10 backdrop-blur-md">
+        <button aria-label="contact us" className="flex items-center gap-2 border-2 border-black md:px-7 md:py-3 px-4 py-4 font-semibold text-xl tracking-wide rounded-full bg-white/10 backdrop-blur-md">
           <span className="hidden md:block">contact us</span>
           <ArrowUpRight size={24} weight="bold" />
         </button>
