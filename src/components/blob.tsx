@@ -1,4 +1,4 @@
-const Blob = () => {
+export const Blob = () => {
     return(
         
           <div

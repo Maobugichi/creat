@@ -1,4 +1,3 @@
-"use client";
 
 import { m } from "motion/react";
 
@@ -24,17 +23,7 @@ const CONTAINER_VARIANTS = {
   },
 };
 
-const WORD_VARIANTS: import("motion/react").Variants = {
-  hidden: { y: 40, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-    },
-  },
-};
+
 
 const VIEWPORT = { once: false, amount: 0.3 } as const;
 
