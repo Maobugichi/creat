@@ -12,7 +12,7 @@ export const FAQAccordion = () => {
       {FAQ_ITEMS.map((faq, index) => (
         <AccordionItem
           key={faq.id}
-          className="p-2 border rounded-2xl px-6 md:px-10"
+          className="p-2  border  rounded-2xl px-6 md:px-10"
           value={`item-${index + 1}`}
         >
           <AccordionTrigger className=" text-base md:text-xl lg:text-2xl [&>svg]:size-5 md:[&>svg]:size-6 tracking-wide text-left hover:no-underline">

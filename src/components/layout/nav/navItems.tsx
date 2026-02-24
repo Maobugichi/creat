@@ -1,6 +1,6 @@
 import { m, type Variants, type Transition } from "motion/react";
 import { useMemo } from "react";
-
+import { scrollToSection } from "@/utils";
 
 const letterTransition: Transition = {
   type: "spring",
@@ -43,17 +43,15 @@ const wordWrapperVariant: Variants = {
   },
 };
 
-
 const LINE_HEIGHT_STYLE = { lineHeight: 1 } as const;
-
 
 const LETTER_TRANSITIONS: Transition[] = Array.from({ length: 20 }, (_, i) => ({
   ...letterTransition,
   delay: i * 0.04,
 }));
 
-export const RollingText = ({ word }: { word: string }) => {
-  
+// ← added sectionId prop
+export const RollingText = ({ word, sectionId }: { word: string; sectionId?: string }) => {
   const chars = useMemo(() => word.split(""), [word]);
 
   return (
@@ -61,6 +59,8 @@ export const RollingText = ({ word }: { word: string }) => {
       variants={wordWrapperVariant}
       className="relative block whitespace-nowrap cursor-pointer"
       style={LINE_HEIGHT_STYLE}
+      // ← fires scroll on the wrapper click
+      onClick={() => sectionId && scrollToSection(sectionId)}
     >
       <m.span
         initial="initial"
@@ -71,25 +71,22 @@ export const RollingText = ({ word }: { word: string }) => {
       >
         <div className="flex">
           {chars.map((char, i) => (
-            // ✅ key={char + i} — char alone isn't unique (repeated letters),
-            // index alone is fragile. Combining both is stable for a fixed word.
             <span key={char + i} className="relative inline-block overflow-hidden">
-              <m.a
+              <m.span
                 variants={letterVariants}
-                // ✅ Precomputed transition — no spread, no allocation
                 transition={LETTER_TRANSITIONS[i] ?? LETTER_TRANSITIONS[LETTER_TRANSITIONS.length - 1]}
                 className="inline-block"
               >
                 {char === " " ? "\u00A0" : char}
-              </m.a>
+              </m.span>
 
-              <m.a
+              <m.span
                 variants={letterVariants}
                 transition={LETTER_TRANSITIONS[i] ?? LETTER_TRANSITIONS[LETTER_TRANSITIONS.length - 1]}
                 className="absolute left-0 top-full inline-block silver-gradient"
               >
                 {char === " " ? "\u00A0" : char}
-              </m.a>
+              </m.span>
             </span>
           ))}
         </div>

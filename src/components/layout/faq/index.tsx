@@ -12,7 +12,7 @@ export const FAQ = () => {
                     </h2>
                     
                   
-                    <div className="hidden md:block">
+                    <div className="hidden md:block w-1/2 lg:w-fit">
                         <Btn>Book a call</Btn>
                     </div>
                 </div>

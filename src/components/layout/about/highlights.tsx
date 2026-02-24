@@ -20,52 +20,20 @@ const MOBILE_RANGES = {
 };
 
 const TEXT_CLASS =
-  "font-body text-gray-900 border-b border-black/40 pb-6 mb-6";
+  "font-body text-[#0F0F0E] dark:text-[#FDFDFC] border-b border-black/20 dark:border-white/20 pb-6 md:pb-10 md:mb-10 mb-6";
 
 export const Highlights = ({ smoothProgress }: HighlightsProps) => {
   const { isDesktop } = useBreakpoints();
 
-  const dY1 = useTransform(
-    smoothProgress,
-    DESKTOP_RANGES.y1.input,
-    DESKTOP_RANGES.y1.output
-  );
-  const dY2 = useTransform(
-    smoothProgress,
-    DESKTOP_RANGES.y2.input,
-    DESKTOP_RANGES.y2.output
-  );
-  const dY3 = useTransform(
-    smoothProgress,
-    DESKTOP_RANGES.y3.input,
-    DESKTOP_RANGES.y3.output
-  );
-  const dY4 = useTransform(
-    smoothProgress,
-    DESKTOP_RANGES.y4.input,
-    DESKTOP_RANGES.y4.output
-  );
+  const dY1 = useTransform(smoothProgress, DESKTOP_RANGES.y1.input, DESKTOP_RANGES.y1.output);
+  const dY2 = useTransform(smoothProgress, DESKTOP_RANGES.y2.input, DESKTOP_RANGES.y2.output);
+  const dY3 = useTransform(smoothProgress, DESKTOP_RANGES.y3.input, DESKTOP_RANGES.y3.output);
+  const dY4 = useTransform(smoothProgress, DESKTOP_RANGES.y4.input, DESKTOP_RANGES.y4.output);
 
-  const mY1 = useTransform(
-    smoothProgress,
-    MOBILE_RANGES.y1.input,
-    MOBILE_RANGES.y1.output
-  );
-  const mY2 = useTransform(
-    smoothProgress,
-    MOBILE_RANGES.y2.input,
-    MOBILE_RANGES.y2.output
-  );
-  const mY3 = useTransform(
-    smoothProgress,
-    MOBILE_RANGES.y3.input,
-    MOBILE_RANGES.y3.output
-  );
-  const mY4 = useTransform(
-    smoothProgress,
-    MOBILE_RANGES.y4.input,
-    MOBILE_RANGES.y4.output
-  );
+  const mY1 = useTransform(smoothProgress, MOBILE_RANGES.y1.input, MOBILE_RANGES.y1.output);
+  const mY2 = useTransform(smoothProgress, MOBILE_RANGES.y2.input, MOBILE_RANGES.y2.output);
+  const mY3 = useTransform(smoothProgress, MOBILE_RANGES.y3.input, MOBILE_RANGES.y3.output);
+  const mY4 = useTransform(smoothProgress, MOBILE_RANGES.y4.input, MOBILE_RANGES.y4.output);
 
   const y1 = isDesktop ? dY1 : mY1;
   const y2 = isDesktop ? dY2 : mY2;
@@ -73,7 +41,7 @@ export const Highlights = ({ smoothProgress }: HighlightsProps) => {
   const y4 = isDesktop ? dY4 : mY4;
 
   return (
-    <div className="text-xl tracking-wide leading-relaxed max-w-md flex flex-col mb-20 md:mb-0">
+    <div className="text-xl md:text-2xl lg:text-xl tracking-wide leading-relaxed lg:max-w-md flex flex-col mb-20 md:mb-0">
       <m.p style={{ y: y1 }} className={TEXT_CLASS}>
         We're a bunch of creatives who love blending art and tech to build
         experiences that actually make people feel something.
@@ -89,7 +57,10 @@ export const Highlights = ({ smoothProgress }: HighlightsProps) => {
         collaborators, and deliver top-tier services.
       </m.p>
 
-      <m.p style={{ y: y4 }} className="font-body text-gray-900 pb-6">
+      <m.p
+        style={{ y: y4 }}
+        className="font-body text-[#0F0F0E] dark:text-[#FDFDFC] pb-6"
+      >
         We build for Web3 communities around the world so they can vibe
         with the future of the internet.
       </m.p>

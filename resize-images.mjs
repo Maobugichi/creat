@@ -10,13 +10,14 @@ const sizes = {
   'rocket': 384,
   'setting': 384,
   'target': 288,
-  'painting': 288,
+  'figma': 288,
   'brush': 288,
   'notify': 288,
+  'chat':288
 };
 
 
-const assetsDir = './src/assets';  // or './src/assets' or './public/assets'
+const assetsDir = './src/assets';  
 
 
 function findImages(dir) {

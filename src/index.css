@@ -3,7 +3,7 @@
 @import "shadcn/tailwind.css";
 @source "../src/**/*.{ts,tsx}";
 
-
+@custom-variant dark (&:where(.dark, .dark *));
 
 @font-face {
   font-family: 'Inter';
@@ -40,8 +40,43 @@
 @theme {
   --font-heading: 'Space Grotesk', sans-serif;
   --font-body: 'Inter', sans-serif;
+  --animate-float: float 4s ease-in-out infinite;
+  --animate-blob-pulse: blobPulse 8s ease-in-out infinite;
+  --animate-fade-slide-in: fadeSlideIn 0.2s ease forwards;
 }
 
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+
+@keyframes blobPulse {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  33%       { transform: scale(1.02) rotate(0.5deg); }
+  66%       { transform: scale(0.98) rotate(-0.5deg); }
+}
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.blob-mask {
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='-30 -30 960 660' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='white' d='M450,15 Q490,45 540,30 Q570,10 610,50 Q640,80 690,40 Q730,15 755,70 Q775,110 830,95 Q875,85 865,145 Q855,195 900,210 Q935,225 905,275 Q880,315 910,365 Q935,410 885,435 Q840,455 855,510 Q868,555 815,560 Q765,565 750,595 Q730,620 685,590 Q645,562 600,578 Q558,592 525,565 Q490,538 450,558 Q410,578 375,558 Q338,538 298,568 Q260,595 225,572 Q188,548 158,568 Q122,590 100,558 Q80,528 42,532 Q5,535 18,492 Q30,452 -5,422 Q-35,393 8,355 Q42,322 18,278 Q-5,235 30,205 Q62,178 48,130 Q35,85 82,78 Q125,72 140,32 Q152,-2 198,18 Q238,36 268,15 Q298,-5 335,22 Q368,46 410,18 Z'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='-30 -30 960 660' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='white' d='M450,15 Q490,45 540,30 Q570,10 610,50 Q640,80 690,40 Q730,15 755,70 Q775,110 830,95 Q875,85 865,145 Q855,195 900,210 Q935,225 905,275 Q880,315 910,365 Q935,410 885,435 Q840,455 855,510 Q868,555 815,560 Q765,565 750,595 Q730,620 685,590 Q645,562 600,578 Q558,592 525,565 Q490,538 450,558 Q410,578 375,558 Q338,538 298,568 Q260,595 225,572 Q188,548 158,568 Q122,590 100,558 Q80,528 42,532 Q5,535 18,492 Q30,452 -5,422 Q-35,393 8,355 Q42,322 18,278 Q-5,235 30,205 Q62,178 48,130 Q35,85 82,78 Q125,72 140,32 Q152,-2 198,18 Q238,36 268,15 Q298,-5 335,22 Q368,46 410,18 Z'/%3E%3C/svg%3E");
+  mask-size: contain;
+  -webkit-mask-size: contain;
+  mask-position: center;
+  -webkit-mask-position: center;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  animation: var(--animate-blob-pulse);
+}
+
+.tab-panel {
+  animation: var(--animate-fade-slide-in);
+}
 
 
 @custom-variant dark (&:is(.dark *));

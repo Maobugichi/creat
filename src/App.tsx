@@ -1,22 +1,24 @@
-import './App.css'
-import { lazy, Suspense, useState, useEffect, useRef } from 'react'
-import { Navbar } from './components/layout/nav'
-import { Hero } from './components/layout/hero'
+import './App.css';
+import { lazy, Suspense, useState, useEffect, useRef } from 'react';
+import { Navbar } from './components/layout/nav';
+import { Hero } from './components/layout/hero';
 
-const CardStack = lazy(() => import('./components/layout/about/cardStack').then(m => ({ default: m.CardStack })))
-const MarqueeSection = lazy(() => import('./components/marqsection').then(m => ({ default: m.MarqueeSection })))
-const Featured = lazy(() => import('./components/layout/featured').then(m => ({ default: m.Featured })))
-const FAQ = lazy(() => import('./components/layout/faq').then(m => ({ default: m.FAQ })))
-const Footer = lazy(() => import('./components/layout/footer/footer').then(m => ({ default: m.Footer })))
+
+const CardStack = lazy(() => import('./components/layout/about/cardStack').then(m => ({ default: m.CardStack })));
+const MarqueeSection = lazy(() => import('./components/marqsection').then(m => ({ default: m.MarqueeSection })));
+const Featured = lazy(() => import('./components/layout/featured').then(m => ({ default: m.Featured })));
+const FAQ = lazy(() => import('./components/layout/faq').then(m => ({ default: m.FAQ })));
+const ContactSection = lazy(() => import('./components/layout/contact'));
+const Footer = lazy(() => import('./components/layout/footer/footer').then(m => ({ default: m.Footer })));
 
 function App() {
-  const [showBelowFold, setShowBelowFold] = useState(false);
-  const [showFAQ, setShowFAQ] = useState(false);
+  const [showBelowFold, setShowBelowFold] = useState<boolean>(false);
+  const [showFAQ, setShowFAQ] = useState<boolean>(false);
   const belowFoldTriggerRef = useRef<HTMLDivElement>(null);
   const faqTriggerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // ✅ Defer ALL below-fold content until 3 seconds OR user scrolls
+ 
     const timer = setTimeout(() => {
       setShowBelowFold(true);
     }, 3000);
@@ -25,7 +27,7 @@ function App() {
       (entries) => {
         if (entries[0].isIntersecting) {
           setShowBelowFold(true);
-          clearTimeout(timer); // Cancel timer if user scrolls early
+          clearTimeout(timer); 
         }
       },
       { rootMargin: '400px' }
@@ -42,7 +44,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // FAQ loads separately when user scrolls near it
+  
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
@@ -64,7 +66,7 @@ function App() {
       <Navbar />
       <Hero />
       
-      {/* Trigger for below-fold content */}
+    
       <div ref={belowFoldTriggerRef} className="h-1" aria-hidden="true" />
       
       {showBelowFold && (
@@ -75,11 +77,12 @@ function App() {
         </Suspense>
       )}
       
-      {/* Separate trigger for FAQ */}
+      
       <div ref={faqTriggerRef} className="h-1" aria-hidden="true" />
       
       {showFAQ && (
         <Suspense fallback={<div className="min-h-screen" />}>
+          <ContactSection/>
           <FAQ />
           <Footer />
         </Suspense>
