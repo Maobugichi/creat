@@ -29,7 +29,7 @@ export const Hero = () => {
   return (
     <section
       id="hero"
-      className="min-h-[90vh] md:min-h-[80vh] pt-32 pb-20 mt-24 grid place-items-center px-6 relative overflow-hidden"
+      className="min-h-svh pt-20 pb-20 grid place-items-center px-6 relative mt-24 overflow-hidden"
     >
       <div className="absolute bg-[#FAF7F6] dark:bg-[#0F0F0E] inset-0 opacity-30 dark:opacity-40 pointer-events-none">
         {shouldLoad3d ? (
@@ -45,30 +45,29 @@ export const Hero = () => {
         )}
       </div>
 
-      <div className="w-full max-w-6xl text-center mx-auto flex flex-col items-center justify-center gap-6 md:gap-10 relative z-10">
-
-        <h1 className="text-6xl font-heading sm:text-6xl md:text-7xl lg:text-8xl tracking-tight leading-[1.1] font-bold text-[#0F0F0E] dark:text-[#FDFDFC]">
-          Product and 3D <br className="hidden md:block" /> design studio
+      <div className="w-full max-w-6xl text-center mx-auto flex flex-col items-center justify-center relative z-10">
+       
+        <h1
+          className="font-heading font-bold tracking-tight leading-[1.1] text-[#0F0F0E] dark:text-[#FDFDFC] mb-6"
+          style={{ fontSize: "clamp(2.8rem, 8vw, 5.5rem)" }}
+        >
+          Designs that turn{" "}
+          <br className="hidden md:block" />
+          visitors into customers
         </h1>
 
         <m.p
-          initial={false}
-          animate={shouldAnimate ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="text-xl font-body md:text-2xl text-gray-500 dark:text-[#A8A8A3] max-w-2xl w-full leading-relaxed"
+          className="text-lg md:text-xl font-body text-gray-500 dark:text-[#A8A8A3] max-w-xl w-full leading-relaxed mb-10"
         >
-          Creating innovative products, and 3D designs that bring ideas to life.
-          Our focus is on quality, creativity, and delivering exceptional visual
-          experiences.
+          We build product interfaces and 3D visuals that earn attention, drive action, and make your brand worth remembering.
         </m.p>
 
         <m.div
           initial={false}
           animate={shouldAnimate ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
-          className="mt-4"
         >
-          <Btn>Get in Touch</Btn>
+          <Btn>Start a Project</Btn>
         </m.div>
       </div>
     </section>

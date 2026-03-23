@@ -43,13 +43,11 @@ export const Card = ({
           zIndex: i,
           boxShadow: `0 4px 24px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.85)`,
         }}
-        className="relative h-100 w-full md:w-[90%] max-w-175 rounded-3xl p-10 shadow-2xl will-change-transform origin-top border border-white/75 overflow-hidden"
+        className="relative h-100 w-full md:w-[90%] max-w-175 rounded-3xl p-10 md:p-14 shadow-2xl will-change-transform origin-top border border-white/75 overflow-hidden"
         whileHover={{
           boxShadow: `0 20px 60px -10px ${glowColor}, 0 4px 24px rgba(0,0,0,0.07), inset 0 1px 0 rgba(255,255,255,0.9)`,
         }}
       >
-       
-       
         <div
           className="absolute inset-0 pointer-events-none z-0 opacity-[0.035]"
           style={{
@@ -59,7 +57,6 @@ export const Card = ({
           }}
         />
 
-        {/* ── Periodic shimmer ────────────────────────────────────── */}
         <m.div
           className="absolute inset-0 pointer-events-none z-20"
           style={{
@@ -80,8 +77,7 @@ export const Card = ({
           }}
         />
 
-        {/* ── Icon — luminosity + radial wash ─────────────────────── */}
-        <div className="absolute  pointer-events-none z-0" style={IMG_STYLE}>
+        <div className="absolute pointer-events-none z-0" style={IMG_STYLE}>
           <m.img
             src={icon}
             alt="3d icon"
@@ -106,13 +102,10 @@ export const Card = ({
           />
         </div>
 
-      
-        <div className="relative z-10">
-
-        
+        <div className="relative z-10 flex flex-col gap-5">
           {contextText && (
             <m.span
-              className="inline-block mb-4 px-2.5 py-1 rounded-full font-medium border bg-white/70 backdrop-blur-sm whitespace-nowrap"
+              className="inline-block w-fit px-2.5 py-1 rounded-full font-medium border bg-white/70 backdrop-blur-sm whitespace-nowrap"
               style={{
                 fontSize: "clamp(0.6rem, 1vw, 0.72rem)",
                 letterSpacing: "0.05em",
@@ -127,15 +120,15 @@ export const Card = ({
             </m.span>
           )}
 
-          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 text-gray-800">
+          <h2 className="lg:hidden text-2xl font-heading font-bold text-gray-800">
             {title}
           </h2>
-          <p className="text-lg md:text-xl text-gray-700 font-body max-w-md">
+
+          <p className="text-lg md:text-xl text-gray-600 font-body max-w-sm leading-loose tracking-wide lg:mt-5 ">
             {description}
           </p>
         </div>
 
-      
         <m.div
           aria-hidden="true"
           className="absolute select-none pointer-events-none font-heading font-black"
@@ -156,14 +149,12 @@ export const Card = ({
           0{i + 1}
         </m.div>
 
-        
         <div
           aria-hidden="true"
           className="absolute bottom-10 font-heading left-10 text-6xl md:text-7xl font-black text-gray-800/20"
         >
           0{i + 1}
         </div>
-
       </m.div>
     </div>
   );

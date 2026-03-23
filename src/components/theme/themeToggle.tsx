@@ -10,7 +10,7 @@ export const ThemeToggle = () => {
       onClick={() => setTheme(nextTheme(theme))}
       aria-label={`Theme: ${THEME_LABELS[theme]} — click to switch`}
       whileTap={{ scale: 0.9 }}
-      className="relative flex items-center gap-2 px-3 py-3 md:py-2 rounded-full
+      className="relative flex items-center gap-2  md:py-3 px-4 py-4 rounded-full
                  border-2 border-black dark:border-white
                  bg-white/10 backdrop-blur-md
                  text-black dark:text-white

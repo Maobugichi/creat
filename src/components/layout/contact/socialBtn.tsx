@@ -6,23 +6,26 @@ interface SocialButtonProps {
   children: ReactNode;
 }
 
-
-
 export const SocialButton = ({ href = "#", label, children }: SocialButtonProps) => {
   return (
-    <a className="flex font-heading items-center gap-2 border-2 border-black px-6 md:px-7  bg-white tracking-wide rounded-full text-black backdrop-blur-md font-semibold py-3" href={href} aria-label={label} >
+    <a
+      href={href}
+      aria-label={label}
+      className="flex items-center justify-center border border-black/15 dark:border-white/15 bg-white/70 dark:bg-white/5 backdrop-blur-sm rounded-full transition-all duration-200 hover:bg-[#0F0F0E] hover:border-[#0F0F0E] group"
+      style={{ width: "2.5rem", height: "2.5rem" }}
+    >
       <svg
         viewBox="0 0 24 24"
-        width={18}
-        height={18}
+        width={15}
+        height={15}
         fill="none"
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="stroke-current"
+        className="stroke-[#0F0F0E] dark:stroke-[#FDFDFC] group-hover:stroke-[#FDFDFC] transition-colors"
       >
         {children}
       </svg>
     </a>
   );
-}
+};

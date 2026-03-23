@@ -5,58 +5,43 @@ import heart from "../../../assets/3dicons-notify-heart-dynamic-color-optimized.
 import clock from "../../../assets/3dicons-clock-dynamic-color-optimized.avif";
 import rocket from "../../../assets/3dicons-rocket-dynamic-color-optimized.avif";
 import { Btn } from "@/components/btn";
-import { useBreakpoints } from "@/hooks/useBreakpoint";
 
-interface GridBlockProps {
+const GRAIN = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`;
+
+interface StatCardProps {
   title: string;
+  shortTitle?: string;
   color: string;
   glowColor: string;
   className?: string;
   targetNumber?: number;
   numberSuffix?: string;
   contextText?: string;
-  position?: { x: number; y: number };
+  shortContextText?: string;
   icon?: string;
-  iconPosition?: { x: string; y: string };
-  iconWidth: string;
-  showBtn?: boolean;
-  btnPosition?: "left" | "right";
   delay?: number;
-  accentColor?: string;
 }
 
-
-
-const GridBlock = ({
+const StatCard = ({
   title,
+  shortTitle,
   color,
   glowColor,
   className = "",
   targetNumber,
   numberSuffix = "+",
   contextText,
-  position = { x: 50, y: 50 },
+  shortContextText,
   icon,
-  iconPosition = { x: "50%", y: "20%" },
-  iconWidth,
-  showBtn = false,
-  btnPosition = "left",
   delay = 0,
-  accentColor = "rgba(0,0,0,0.06)",
-}: GridBlockProps) => {
+}: StatCardProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.4 });
-
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const iconX = useTransform(mouseX, [-1, 1], [-8, 8]);
-  const iconY = useTransform(mouseY, [-1, 1], [-8, 8]);
+  const isInView = useInView(ref, { once: true, amount: 0.15 });
+  const [isHovered, setIsHovered] = useState(false);
 
   const motionValue = useMotionValue(0);
   const springValue = useSpring(motionValue, { stiffness: 55, damping: 12 });
   const displayValue = useTransform(springValue, (latest) => Math.round(latest));
-
-  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     if (isInView && targetNumber) {
@@ -64,43 +49,14 @@ const GridBlock = ({
     }
   }, [isInView, motionValue, targetNumber]);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    mouseX.set(x * 2);
-    mouseY.set(y * 2);
-  };
-
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-    setIsHovered(false);
-  };
-
-  const positionStyle = {
-    left: `${position.x}%`,
-    top: `${position.y}%`,
-    transform: "translate(-50%, -50%)",
-  };
-
-  const iconStyle = {
-    left: iconPosition.x,
-    top: iconPosition.y,
-  };
-
   return (
     <m.div
       ref={ref}
-      className={`relative font-bold overflow-hidden flex items-end border ${
-        btnPosition === "right" ? "justify-end" : "justify-start"
-      } ${color} ${className}`}
+      className={`relative overflow-hidden flex flex-col justify-between border ${className}`}
       style={{
-        padding: "2.5rem",
+        backgroundColor: color,
         borderRadius: "1.75rem",
-        minHeight: "12rem",
         borderColor: "rgba(255,255,255,0.75)",
-        backdropFilter: "blur(12px)",
         boxShadow: isHovered
           ? `0 20px 60px -10px ${glowColor}, 0 4px 24px rgba(0,0,0,0.07), inset 0 1px 0 rgba(255,255,255,0.9)`
           : `0 4px 24px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.85)`,
@@ -109,34 +65,21 @@ const GridBlock = ({
       initial={{ opacity: 0, y: 24 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay }}
-    
-      onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={handleMouseLeave}
+      onMouseLeave={() => setIsHovered(false)}
     >
-    
       <div
         className="absolute inset-0 pointer-events-none z-0 opacity-[0.035]"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          backgroundRepeat: "repeat",
-          backgroundSize: "128px 128px",
-        }}
+        style={{ backgroundImage: GRAIN, backgroundRepeat: "repeat", backgroundSize: "128px 128px" }}
       />
 
-      {/* Periodic shimmer sweep */}
       <m.div
         className="absolute inset-0 pointer-events-none z-20"
         style={{
-          background:
-            "linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.5) 50%, transparent 65%)",
+          background: "linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.5) 50%, transparent 65%)",
           backgroundSize: "200% 100%",
         }}
-        animate={
-          isInView
-            ? { backgroundPosition: ["200% 0", "-200% 0"] }
-            : { backgroundPosition: "200% 0" }
-        }
+        animate={isInView ? { backgroundPosition: ["200% 0", "-200% 0"] } : { backgroundPosition: "200% 0" }}
         transition={{
           duration: 1.2,
           ease: "easeInOut" as const,
@@ -146,218 +89,183 @@ const GridBlock = ({
         }}
       />
 
-      {/* Accent shape */}
-      <div
-        className="absolute pointer-events-none z-0"
-        style={{
-          width: "60%",
-          height: "60%",
-          borderRadius: "1rem",
-          background: accentColor,
-          transform: "rotate(-18deg) translate(-10%, 30%)",
-          bottom: 0,
-          left: 0,
-        }}
-      />
-
-      {/* Ghost watermark number */}
-      {targetNumber && (
-        <m.span
-          className="absolute select-none pointer-events-none z-0 font-extrabold"
-          style={{
-            fontSize: "clamp(6rem, 14vw, 11rem)",
-            lineHeight: 1,
-            color: "rgba(0,0,0,0.04)",
-            left: "50%",
-            top: "50%",
-            transform: "translate(-50%, -50%)",
-            letterSpacing: "-0.04em",
-          }}
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 1, delay: delay + 0.3 }}
-        >
-          {targetNumber}
-        </m.span>
-      )}
-
-      {/* Floating icon with parallax */}
       {icon && (
-        <m.div
-          className={`absolute pointer-events-none z-0 ${iconWidth}`}
-          style={{ ...iconStyle, x: iconX, y: iconY }}
-          initial={{ scale: 0.5, opacity: 0, x: "-50%", y: "-50%" }}
-          animate={
-            isInView
-              ? { scale: 1, opacity: 1, x: "-50%", y: "-50%" }
-              : { scale: 0.5, opacity: 0, x: "-50%", y: "-50%" }
-          }
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: delay + 0.1 }}
-        >
-          <m.img
-            src={icon}
-            alt=""
-            aria-hidden="true"
-            className="w-full h-full object-contain drop-shadow-xl"
-            style={{ opacity: 0.72, mixBlendMode: "luminosity" as React.CSSProperties["mixBlendMode"] }}
-          />
-          {/* Soft radial wash — calms icon colour without killing the 3D feel */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: "radial-gradient(circle at 55% 40%, rgba(255,255,255,0.22) 0%, transparent 70%)",
-              mixBlendMode: "screen" as React.CSSProperties["mixBlendMode"],
-            }}
-          />
-        </m.div>
+        <m.img
+          src={icon}
+          alt=""
+          aria-hidden="true"
+          className="absolute pointer-events-none z-0 object-contain hidden lg:block"
+          style={{
+            width: "180px",
+            height: "180px",
+            bottom: "-12px",
+            right: "-12px",
+            mixBlendMode: "luminosity" as React.CSSProperties["mixBlendMode"],
+            opacity: 0.75,
+          }}
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={isInView ? { scale: 1, opacity: 0.75 } : {}}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: delay + 0.15 }}
+        />
       )}
 
-      {/* Counter + label + context */}
-      {targetNumber ? (
-        <div className="absolute flex flex-col z-10" style={positionStyle}>
-
-          {/* Context pill — always visible */}
-          {contextText && (
-            <m.span
-              className="self-start mb-2.5 px-2.5 py-1 rounded-full font-medium border bg-white/70 backdrop-blur-sm whitespace-nowrap"
-              style={{
-                fontSize: "clamp(0.6rem, 1vw, 0.72rem)",
-                letterSpacing: "0.05em",
-                color: "rgba(0,0,0,0.62)",
-                borderColor: "rgba(0,0,0,0.18)",
-              }}
-              initial={{ opacity: 0, y: 8 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: delay + 0.55 }}
-            >
-              {contextText}
-            </m.span>
-          )}
-
-          <div className="flex items-end gap-0.5 leading-none mb-2">
-            <m.span
-              className="font-extrabold text-gray-800 leading-none"
-              style={{ fontSize: "clamp(2.8rem, 6vw, 4.5rem)", letterSpacing: "-0.04em" }}
-            >
-              {displayValue}
-            </m.span>
-            <span
-              className="font-extrabold text-gray-400 leading-none pb-1"
-              style={{ fontSize: "clamp(1.6rem, 3vw, 2.5rem)" }}
-            >
-              {numberSuffix}
-            </span>
-          </div>
-
+      <div className="relative z-10 p-5 lg:p-8 flex flex-col justify-between h-full gap-3 lg:gap-0">
+        {contextText && (
           <span
-            className="font-light text-gray-500 tracking-widest uppercase whitespace-nowrap"
-            style={{ fontSize: "clamp(0.6rem, 1.2vw, 0.75rem)", letterSpacing: "0.15em" }}
+            className="self-start px-2.5 py-1 rounded-full font-medium border bg-white/70 backdrop-blur-sm whitespace-nowrap"
+            style={{
+              fontSize: "0.65rem",
+              letterSpacing: "0.04em",
+              color: "rgba(0,0,0,0.55)",
+              borderColor: "rgba(0,0,0,0.15)",
+            }}
           >
-            {title}
+            <span className="lg:hidden">{shortContextText ?? contextText}</span>
+            <span className="hidden lg:inline">{contextText}</span>
+          </span>
+        )}
+
+        <div className="flex flex-col gap-0.5 lg:mt-auto">
+          {targetNumber && (
+            <div className="flex items-end gap-0.5 leading-none">
+              <m.span
+                className="font-extrabold text-[#0F0F0E] dark:text-[#FDFDFC] leading-none"
+                style={{ fontSize: "clamp(2.4rem, 7vw, 5.5rem)", letterSpacing: "-0.04em" }}
+              >
+                {displayValue}
+              </m.span>
+              <span
+                className="font-extrabold text-[#0F0F0E]/40 dark:text-[#FDFDFC]/40 leading-none pb-1"
+                style={{ fontSize: "clamp(1.2rem, 3.5vw, 2.8rem)" }}
+              >
+                {numberSuffix}
+              </span>
+            </div>
+          )}
+          <span
+            className="font-body font-medium text-[#0F0F0E]/50 dark:text-[#FDFDFC]/50 uppercase tracking-widest"
+            style={{ fontSize: "0.65rem", letterSpacing: "0.12em" }}
+          >
+            <span className="lg:hidden">{shortTitle ?? title}</span>
+            <span className="hidden lg:inline">{title}</span>
           </span>
         </div>
-      ) : (
-        <div
-          className="absolute flex items-center justify-center z-10 text-gray-800 font-semibold text-xl md:text-2xl max-w-[80%] text-center"
-          style={positionStyle}
-        >
-          {title}
-        </div>
-      )}
-
-      {showBtn && (
-        <div className="relative z-10">
-          <Btn>Check us</Btn>
-        </div>
-      )}
+      </div>
     </m.div>
   );
 };
 
 export const FeatureGrid = () => {
-  const { isMobile, isTablet } = useBreakpoints();
-
-  const getPos = <T,>(mobile: T, tablet: T, desktop: T): T => {
-    if (isMobile) return mobile;
-    if (isTablet) return tablet;
-    return desktop;
-  };
-
   return (
-    <div className="w-full h-[200vh] md:h-[80vh] lg:h-[150vh] max-w-6xl mx-auto px-6 py-20">
-      <div className="h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 auto-rows-fr gap-5">
+    <div
+      className="grid grid-cols-2 lg:grid-cols-12 gap-3 lg:gap-4"
+      style={{ gridAutoRows: "minmax(150px, auto)" }}
+    >
+      <StatCard
+        title="Projects completed"
+        shortTitle="Projects"
+        className="col-span-1 lg:col-span-3 lg:min-h-[300px]"
+        color="#F5F0E8"
+        glowColor="rgba(210,190,150,0.35)"
+        targetNumber={150}
+        numberSuffix="+"
+        contextText="Across 18 industries"
+        shortContextText="18 industries"
+        icon={trophy}
+        delay={0}
+      />
 
-        <GridBlock
-          title="Projects Completed"
-          className="lg:col-span-2 row-span-2 lg:row-span-1"
-          color="bg-[#F5F0E8]/60"
-          glowColor="rgba(210,190,150,0.35)"
-          accentColor="rgba(200,170,110,0.08)"
-          targetNumber={150}
-          numberSuffix="+"
-          contextText="Across 18 industries"
-          delay={0}
-          position={getPos({ x: 70, y: 75 }, { x: 60, y: 75 }, { x: 70, y: 75 })}
-          icon={trophy}
-          iconPosition={getPos({ x: '28%', y: '38%' }, { x: '20%', y: '30%' }, { x: '-25%', y: '-10%' })}
-          iconWidth="w-52 h-52 md:w-42 md:h-42 lg:w-80 lg:h-80"
-          showBtn={false}
+      <StatCard
+        title="Happy clients"
+        shortTitle="Clients"
+        color="#E8F0EC"
+        glowColor="rgba(120,190,150,0.35)"
+        className="col-span-1 lg:col-span-6 lg:min-h-[300px]"
+        targetNumber={200}
+        numberSuffix="+"
+        contextText="Across 12 countries"
+        shortContextText="12 countries"
+        icon={heart}
+        delay={0.1}
+      />
+
+      <StatCard
+        title="Team members"
+        shortTitle="Team"
+        className="col-span-1 lg:col-span-3 lg:min-h-[300px]"
+        color="#F5EBE8"
+        glowColor="rgba(210,130,110,0.35)"
+        targetNumber={25}
+        numberSuffix="+"
+        contextText="Growing fast"
+        icon={rocket}
+        delay={0.15}
+      />
+
+      <StatCard
+        title="Years experience"
+        shortTitle="Experience"
+        color="#E8ECF5"
+        glowColor="rgba(120,140,210,0.35)"
+        className="col-span-1 lg:col-span-5 lg:min-h-[300px]"
+        targetNumber={8}
+        numberSuffix="yrs"
+        contextText="Since 2016"
+        icon={clock}
+        delay={0.2}
+      />
+
+      <m.div
+        className="col-span-2 lg:col-span-7 relative overflow-hidden flex flex-col justify-between border bg-[#0F0F0E] dark:bg-[#FDFDFC]"
+        style={{
+          padding: "1.5rem",
+          borderRadius: "1.75rem",
+          borderColor: "rgba(255,255,255,0.08)",
+          boxShadow: "0 4px 24px rgba(0,0,0,0.12)",
+          minHeight: "180px",
+        }}
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.25 }}
+      >
+        <div
+          className="absolute inset-0 pointer-events-none z-0 opacity-[0.04]"
+          style={{ backgroundImage: GRAIN, backgroundRepeat: "repeat", backgroundSize: "128px 128px" }}
         />
+        <span
+          className="absolute pointer-events-none select-none font-heading font-black text-white/[0.04] dark:text-black/[0.04] leading-none"
+          style={{
+            fontSize: "clamp(4rem, 18vw, 14rem)",
+            bottom: "-0.15em",
+            right: "-0.05em",
+            letterSpacing: "-0.04em",
+            lineHeight: 1,
+          }}
+        >
+          WE
+        </span>
 
-        <GridBlock
-          title="Happy Clients"
-          color="bg-[#E8F0EC]/60"
-          glowColor="rgba(120,190,150,0.35)"
-          accentColor="rgba(100,180,130,0.08)"
-          className="lg:col-span-3 row-span-3 lg:row-span-1"
-          targetNumber={200}
-          numberSuffix="+"
-          contextText="Across 12 countries"
-          delay={0.1}
-          position={getPos({ x: 65, y: 65 }, { x: 60, y: 55 }, { x: 70, y: 50 })}
-          icon={heart}
-          iconPosition={getPos({ x: '25%', y: '30%' }, { x: '28%', y: '25%' }, { x: '-15%', y: '26%' })}
-          iconWidth="w-60 h-60 md:w-42 md:h-42 lg:w-80 lg:h-80"
-          showBtn={true}
-          btnPosition="right"
-        />
+        <div className="relative z-10 flex flex-col justify-between h-full gap-6">
+          <p
+            className="font-heading font-bold text-[#FDFDFC] dark:text-[#0F0F0E] leading-[1.05]"
+            style={{ fontSize: "clamp(1.3rem, 4vw, 2.8rem)" }}
+          >
+            Ready to build
+            <br />
+            <span className="text-white/40 dark:text-black/40">something worth</span>
+            <br />
+            remembering?
+          </p>
 
-        <GridBlock
-          title="Years Experience"
-          color="bg-[#E8ECF5]/60"
-          glowColor="rgba(120,140,210,0.35)"
-          accentColor="rgba(100,120,200,0.07)"
-          className="lg:col-span-3 row-span-3 lg:row-span-1"
-          targetNumber={8}
-          numberSuffix="yrs"
-          contextText="Since 2016"
-          delay={0.2}
-          position={getPos({ x: 35, y: 65 }, { x: 40, y: 55 }, { x: 20, y: 50 })}
-          icon={clock}
-          iconPosition={getPos({ x: '72%', y: '35%' }, { x: '68%', y: '28%' }, { x: '65%', y: '30%' })}
-          iconWidth="w-60 h-60 md:w-42 md:h-42 lg:w-80 lg:h-80"
-          showBtn={true}
-          btnPosition="left"
-        />
-
-        <GridBlock
-          title="Team Members"
-          className="lg:col-span-2 row-span-2 lg:row-span-1"
-          color="bg-[#F5EBE8]/60"
-          glowColor="rgba(210,130,110,0.35)"
-          accentColor="rgba(210,120,100,0.07)"
-          targetNumber={25}
-          numberSuffix="+"
-          contextText="& growing fast"
-          delay={0.3}
-          position={{ x: 28, y: 75 }}
-          icon={rocket}
-          iconPosition={getPos({ x: "68%", y: "32%" }, { x: "65%", y: "28%" }, { x: "45%", y: "25%" })}
-          iconWidth="w-60 h-60 md:w-42 md:h-42 lg:w-72 lg:h-72"
-          showBtn={false}
-        />
-
-      </div>
+          <div className="flex items-center justify-between gap-4">
+            <span className="font-body text-sm text-white/30 dark:text-black/30 leading-relaxed">
+              We reply within 24 hours.
+            </span>
+            <Btn size="sm">Start a Project</Btn>
+          </div>
+        </div>
+      </m.div>
     </div>
   );
 };

@@ -1,20 +1,9 @@
 import { useScroll, useSpring } from "motion/react";
 import { useRef, useMemo } from "react";
 import { Card } from "@/components/card";
-import { Highlights } from "./highlights";
-import idea from "../../../assets/3dicons-target-dynamic-color-optimized.avif";
-import pen from "../../../assets/3dicons-figma-dynamic-color-optimized.avif";
-import setting from "../../../assets/3dicons-setting-dynamic-color-optimized.avif";
-import rocket from "../../../assets/3dicons-rocket-dynamic-color-optimized.avif";
+import { StepIndicator } from "./stepIndicator";
+import { cards } from "./cardData";
 import { useBreakpoints } from "@/hooks/useBreakpoint";
-
-
-const cards = [
-  { title: "The Vision",  description: "Defining the core purpose.",    color: "#F5F0E8", icon: idea    },
-  { title: "The Design",  description: "Crafting the visual language.", color: "#E8F0EC", icon: pen     },
-  { title: "The Build",   description: "Translating pixels to code.",   color: "#E8ECF5", icon: setting },
-  { title: "The Launch",  description: "Deploying to the world.",       color: "#F5EBE8", icon: rocket  },
-];
 
 const cardData = cards.map((card, i) => ({
   ...card,
@@ -26,9 +15,7 @@ const cardData = cards.map((card, i) => ({
 export const CardStack = () => {
   const container = useRef(null);
 
- 
-  const { isTablet, isTallNarrow, isMidHeight, isThinHeight, isShortHeight } = useBreakpoints();
-
+  const { isTablet, isTallNarrow, isMidHeight, isThinHeight, isShortHeight, isMobile } = useBreakpoints();
 
   const multiplier = useMemo(() => {
     if (isThinHeight)  return 200;
@@ -39,8 +26,7 @@ export const CardStack = () => {
     return 100;
   }, [isTablet, isTallNarrow, isMidHeight, isThinHeight, isShortHeight]);
 
-
-  const sectionHeight = `${cardData.length * multiplier}vh`;
+  const sectionHeight = isMobile ? "auto" : `${cardData.length * multiplier}vh`;
 
   const { scrollYProgress } = useScroll({
     target: container,
@@ -57,14 +43,26 @@ export const CardStack = () => {
     <section
       id="about"
       ref={container}
-      className="relative flex flex-col pt-20 lg:flex-row lg:gap-10 px-5 lg:px-20"
+      className="relative flex flex-col lg:flex-row lg:gap-10 px-5 lg:px-20"
       style={{ height: sectionHeight }}
     >
-      <div className="lg:w-1/2 lg:sticky top-[10vh] h-fit">
-        <h2 className="font-heading text-5xl font-bold mb-6 leading-tight">
-          Guess <span className="text-gray-600">what we can do</span>
+      <h2 className="lg:hidden font-heading text-4xl font-bold mb-8 leading-tight pt-10">
+        How we take a project{" "}
+        <span className="text-gray-400">from brief to live</span>
+      </h2>
+
+      <div className="hidden lg:flex lg:w-1/2 flex-col">
+        <h2 className="font-heading text-5xl font-bold mb-10 leading-tight pt-[10vh]">
+          How we take a project{" "}
+          <span className="text-gray-400">from brief to live</span>
         </h2>
-        <Highlights smoothProgress={smoothProgress} />
+        <div className="sticky top-0 h-screen flex items-center">
+          <StepIndicator
+            steps={cards.map((c) => c.title)}
+            progress={smoothProgress}
+            totalCards={cards.length}
+          />
+        </div>
       </div>
 
       <div className="w-full lg:w-1/2 relative">
@@ -72,7 +70,6 @@ export const CardStack = () => {
           <Card
             key={card.title}
             {...card}
-            
             progress={smoothProgress}
           />
         ))}
