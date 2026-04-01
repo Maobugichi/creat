@@ -57,7 +57,7 @@ export const Hero = () => {
         </h1>
 
         <m.p
-          className="text-lg md:text-xl font-body text-gray-500 dark:text-[#A8A8A3] max-w-xl w-full leading-relaxed mb-10"
+          className="text-lg md:text-2xl font-body text-gray-500 dark:text-[#A8A8A3] max-w-xl w-full leading-relaxed mb-10"
         >
           We build product interfaces and 3D visuals that earn attention, drive action, and make your brand worth remembering.
         </m.p>
