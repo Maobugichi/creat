@@ -128,7 +128,7 @@ export const FAQAccordion = () => {
           </div>
 
           <m.p
-            className="font-body text-lg text-[#0F0F0E]/50 dark:text-[#FDFDFC]/40 max-w-sm lg:text-right leading-relaxed"
+            className="font-body text-lg md:text-3xl text-[#0F0F0E]/50 dark:text-[#FDFDFC]/40 max-w-sm lg:text-right leading-relaxed"
             initial={{ opacity: 0, y: 12 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
