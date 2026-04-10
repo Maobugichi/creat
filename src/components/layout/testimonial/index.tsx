@@ -1,32 +1,11 @@
 import { m, useInView, AnimatePresence } from "motion/react";
 import { useRef, useState, useEffect } from "react";
-import { ArrowUpRight } from "phosphor-react";
 
-const GRAIN = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`;
+import { useDarkMode } from "@/hooks/themes";
+import { GRAIN, testimonials } from "./constants";
+import { TabList } from "./tablist";
 
-const testimonials = [
-  {
-    quote: "They took our vague brief and turned it into a product our users genuinely love. The attention to motion and detail is unlike anything we have seen from an agency.",
-    name: "Sarah Chen",
-    role: "CPO at Nexus",
-    color: "#F5F0E8",
-    initial: "SC",
-  },
-  {
-    quote: "From the first call to launch, they were completely aligned with what we needed. Fast, precise, and they pushed back when our ideas were not good enough — which is exactly what you want.",
-    name: "Marcus Webb",
-    role: "Founder at Orbit",
-    color: "#E8F0EC",
-    initial: "MW",
-  },
-  {
-    quote: "The 3D work gave us a visual identity we had been trying to find for two years. Our conversion rate went up 34% in the first month after the rebrand.",
-    name: "Priya Nair",
-    role: "Head of Brand at Flux",
-    color: "#E8ECF5",
-    initial: "PN",
-  },
-];
+
 
 export const Testimonials = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -34,6 +13,7 @@ export const Testimonials = () => {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
   const [paused, setPaused] = useState(false);
+  const isDark = useDarkMode();
 
   useEffect(() => {
     if (paused) return;
@@ -53,6 +33,20 @@ export const Testimonials = () => {
   };
 
   const active = testimonials[current];
+  const activeBg = isDark ? active.darkColor : active.lightColor;
+
+ 
+  const textPrimary = isDark ? "rgba(255,255,255,0.92)" : "#0F0F0E";
+  const textSecondary = isDark ? "rgba(255,255,255,0.45)" : "rgba(15,15,14,0.5)";
+  const textTertiary = isDark ? "rgba(255,255,255,0.3)" : "rgba(15,15,14,0.4)";
+  const dividerColor = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
+  const dotActive = isDark ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.5)";
+  const dotInactive = isDark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.15)";
+  const avatarBg = isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)";
+  const rowActiveBg = isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)";
+  const pillBadgeBg = isDark ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.7)";
+  const pillBadgeBorder = isDark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.15)";
+  const pillBadgeColor = isDark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.5)";
 
   return (
     <section
@@ -62,8 +56,14 @@ export const Testimonials = () => {
       <div ref={ref}>
         <div className="flex flex-col gap-4 mb-14">
           <m.div
-            className="self-start px-3 py-1.5 rounded-full border bg-white/70 dark:bg-white/5 backdrop-blur-sm font-body font-medium"
-            style={{ fontSize: "0.7rem", letterSpacing: "0.08em", color: "rgba(0,0,0,0.5)", borderColor: "rgba(0,0,0,0.15)" }}
+            className="self-start px-3 py-1.5 rounded-full border backdrop-blur-sm font-body font-medium"
+            style={{
+              fontSize: "0.7rem",
+              letterSpacing: "0.08em",
+              color: pillBadgeColor,
+              borderColor: pillBadgeBorder,
+              backgroundColor: pillBadgeBg,
+            }}
             initial={{ opacity: 0, y: 8 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
@@ -87,10 +87,12 @@ export const Testimonials = () => {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
           className="relative overflow-hidden border"
           style={{
-            backgroundColor: active.color,
+            backgroundColor: activeBg,
             borderRadius: "1.75rem",
-            borderColor: "rgba(255,255,255,0.75)",
-            boxShadow: "0 4px 24px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.85)",
+            borderColor: isDark ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.75)",
+            boxShadow: isDark
+              ? "0 4px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.06)"
+              : "0 4px 24px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.85)",
             transition: "background-color 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
           }}
         >
@@ -126,11 +128,12 @@ export const Testimonials = () => {
                 className="flex flex-col gap-8"
               >
                 <p
-                  className="font-heading font-bold text-[#0F0F0E] leading-tight"
+                  className="font-heading font-bold leading-tight"
                   style={{
                     fontSize: "clamp(1.2rem, 4.5vw, 2.8rem)",
                     letterSpacing: "-0.02em",
                     maxWidth: "42ch",
+                    color: textPrimary,
                   }}
                 >
                   "{active.quote}"
@@ -140,17 +143,26 @@ export const Testimonials = () => {
                   <div className="flex items-center gap-3">
                     <div
                       className="w-10 h-10 md:w-14 md:h-14 rounded-full flex items-center justify-center shrink-0"
-                      style={{ backgroundColor: "rgba(0,0,0,0.08)" }}
+                      style={{ backgroundColor: avatarBg }}
                     >
-                      <span className="font-heading text-xs font-bold text-[#0F0F0E]/50">
+                      <span
+                        className="font-heading text-xs font-bold"
+                        style={{ color: textSecondary }}
+                      >
                         {active.initial}
                       </span>
                     </div>
                     <div className="flex flex-col gap-0.5">
-                      <span className="font-heading text-base md:text-lg font-bold text-[#0F0F0E]">
+                      <span
+                        className="font-heading text-base md:text-lg font-bold"
+                        style={{ color: textPrimary }}
+                      >
                         {active.name}
                       </span>
-                      <span className="font-body text-sm text-[#0F0F0E]/50">
+                      <span
+                        className="font-body text-sm"
+                        style={{ color: textSecondary }}
+                      >
                         {active.role}
                       </span>
                     </div>
@@ -166,7 +178,7 @@ export const Testimonials = () => {
                         style={{
                           width: i === current ? "2rem" : "0.5rem",
                           height: "0.5rem",
-                          backgroundColor: i === current ? "rgba(0,0,0,0.5)" : "rgba(0,0,0,0.15)",
+                          backgroundColor: i === current ? dotActive : dotInactive,
                         }}
                       />
                     ))}
@@ -176,44 +188,19 @@ export const Testimonials = () => {
             </AnimatePresence>
           </div>
 
-          <div className="relative z-10 border-t border-black/8">
-            <div className="flex flex-col md:flex-row">
-              {testimonials.map((t, i) => (
-                <button
-                  key={t.name}
-                  onClick={() => goTo(i)}
-                  className="flex items-center justify-between gap-3 px-7 py-4 md:flex-1 md:px-6 md:py-5 transition-all duration-300 group"
-                  style={{
-                    borderBottom: i < testimonials.length - 1 ? "1px solid rgba(0,0,0,0.08)" : "none",
-                    borderRight: "none",
-                    backgroundColor: i === current ? "rgba(0,0,0,0.04)" : "transparent",
-                  }}
-                >
-                  <div className="flex items-center gap-3">
-                    <div
-                      className="w-1.5 h-1.5 rounded-full shrink-0 transition-all duration-300"
-                      style={{ backgroundColor: i === current ? "rgba(0,0,0,0.5)" : "rgba(0,0,0,0.15)" }}
-                    />
-                    <div className="flex flex-col gap-0 text-left">
-                      <span className="font-heading text-sm font-bold text-[#0F0F0E] group-hover:text-[#0F0F0E]/70 transition-colors">
-                        {t.name}
-                      </span>
-                      <span className="font-body text-xs text-[#0F0F0E]/40">
-                        {t.role}
-                      </span>
-                    </div>
-                  </div>
-                  <m.div
-                    animate={{ rotate: i === current ? 0 : -45 }}
-                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                    className="opacity-30 group-hover:opacity-60 transition-opacity shrink-0"
-                  >
-                    <ArrowUpRight size={14} weight="bold" color="#0F0F0E" />
-                  </m.div>
-                </button>
-              ))}
-            </div>
-          </div>
+         
+          <TabList
+           dividerColor={dividerColor}
+           goTo={goTo}
+           current={current}
+           rowActiveBg={rowActiveBg}
+           dotActive={dotActive}
+           dotInactive={dotInactive}
+           textPrimary={textPrimary}
+           textSecondary={textSecondary}
+           textTertiary={textTertiary}
+           isDark={isDark}
+          />
         </m.div>
       </div>
     </section>

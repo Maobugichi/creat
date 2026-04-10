@@ -16,10 +16,20 @@ const smoothTransition: Transition = {
   mass: 1,
 };
 
+const ITEM_HEIGHT = 96;
+const ROWS = Math.ceil(NAV_ITEMS.length / 2);
+const PADDING_TOP = 80;
+const PADDING_BOTTOM = 32;
+const CONTENT_HEIGHT = ROWS * ITEM_HEIGHT + PADDING_TOP + PADDING_BOTTOM;
+const OPEN_HEIGHT =
+  typeof window !== "undefined"
+    ? Math.min(CONTENT_HEIGHT, window.innerHeight * 0.9)
+    : CONTENT_HEIGHT;
+
 const menuVariants: Variants = {
   open: {
     width: "90vw",
-    height: "90vh",
+    height: OPEN_HEIGHT,
     backgroundColor: "#1C1C1C",
     borderRadius: "65px",
     transition: {
@@ -76,9 +86,8 @@ export const Hamburger = () => {
   const midTransition  = isOpen ? midBarTransitionOpen : midBarTransition;
 
   const handleNavClick = (e: React.MouseEvent, sectionId: string) => {
-    e.stopPropagation(); // prevent toggle firing from the parent div
+    e.stopPropagation();
     setOpen(false);
-    // slight delay so the menu close animation plays first
     setTimeout(() => scrollToSection(sectionId), 400);
   };
 
@@ -92,7 +101,7 @@ export const Hamburger = () => {
       className="fixed top-4 right-4 z-50 shadow-2xl overflow-hidden touch-none"
     >
       <button
-        aria-label="Open menu"
+        aria-label={isOpen ? "Close menu" : "Open menu"}
         className="absolute top-0 right-0 w-15 h-15 flex flex-col items-center justify-center gap-1.5 focus:outline-none z-10"
       >
         <m.span
@@ -119,7 +128,7 @@ export const Hamburger = () => {
             animate="open"
             exit="closed"
             variants={navListVariants}
-            className="p-10 pt-20 text-white w-full h-full flex flex-col gap-8 text-5xl font-bold tracking-tighter"
+            className="p-10 pt-20 pb-8 text-white w-full h-full grid grid-cols-2 content-center gap-x-6 gap-y-8 text-5xl font-bold tracking-tighter overflow-y-auto"
           >
             {NAV_ITEMS.map(({ label, id }) => (
               <div

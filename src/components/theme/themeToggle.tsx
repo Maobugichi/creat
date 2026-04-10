@@ -1,5 +1,5 @@
 import { m, AnimatePresence } from "motion/react";
-import { useTheme, nextTheme } from "../../hooks/useTheme"
+import { useTheme, nextTheme } from "../../hooks/themes"
 import { THEME_ICONS, THEME_LABELS } from "./constants";
 
 export const ThemeToggle = () => {

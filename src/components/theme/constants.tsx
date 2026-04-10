@@ -1,5 +1,5 @@
 import { MoonStars, Sun, Desktop } from "phosphor-react";
-import type { Theme } from "@/hooks/useTheme";
+import type { Theme } from "@/hooks/themes";
 
 export const THEME_ICONS: Record<Theme, React.ReactNode> = {
   light:  <Sun       size={24} weight="bold" />,

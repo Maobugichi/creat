@@ -50,7 +50,7 @@ const LETTER_TRANSITIONS: Transition[] = Array.from({ length: 20 }, (_, i) => ({
   delay: i * 0.04,
 }));
 
-// ← added sectionId prop
+
 export const RollingText = ({ word, sectionId }: { word: string; sectionId?: string }) => {
   const chars = useMemo(() => word.split(""), [word]);
 
@@ -59,7 +59,7 @@ export const RollingText = ({ word, sectionId }: { word: string; sectionId?: str
       variants={wordWrapperVariant}
       className="relative block whitespace-nowrap cursor-pointer"
       style={LINE_HEIGHT_STYLE}
-      // ← fires scroll on the wrapper click
+     
       onClick={() => sectionId && scrollToSection(sectionId)}
     >
       <m.span
