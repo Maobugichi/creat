@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
 
-
 export type Theme = "light" | "dark" | "system";
 
 export function nextTheme(current: Theme): Theme {
@@ -35,7 +34,7 @@ export function useTheme() {
   return { theme, setTheme: setThemeState };
 }
 
-// ─── Dark mode read (use in every component that needs to branch on isDark) ───
+
 
 export function useDarkMode(): boolean {
   const [isDark, setIsDark] = useState(() => {
@@ -44,13 +43,13 @@ export function useDarkMode(): boolean {
   });
 
   useEffect(() => {
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-
     const check = () =>
-      setIsDark(document.documentElement.classList.contains("dark") || mq.matches);
+      setIsDark(document.documentElement.classList.contains("dark")); // ← class only
 
     check();
-    mq.addEventListener("change", check);
+
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener("change", check); // still needed for "system" theme reacting to OS changes
 
     const observer = new MutationObserver(check);
     observer.observe(document.documentElement, {

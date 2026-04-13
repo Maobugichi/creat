@@ -1,14 +1,9 @@
 import { m, useInView } from "motion/react";
 import { useRef } from "react";
 import { Btn } from "@/components/btn";
-
 import { services } from "./constant";
 import { useDarkMode } from "@/hooks/themes";
 import { ServiceCard } from "./card";
-
-
-
-
 
 export const Services = () => {
   const ref = useRef<HTMLDivElement>(null);
