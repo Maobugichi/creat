@@ -3,7 +3,7 @@ import { lazy, Suspense, useState, useEffect, useRef } from 'react';
 import { Navbar } from './components/layout/nav';
 import { Hero } from './components/layout/hero';
 
-const CardStack      = lazy(() => import('./components/layout/about/cardStack').then(m => ({ default: m.CardStack })));
+const CardStack      = lazy(() => import('./components/layout/about').then(m => ({ default: m.CardStack })));
 const MarqueeSection = lazy(() => import('./components/marqsection').then(m => ({ default: m.MarqueeSection })));
 const Featured       = lazy(() => import('./components/layout/featured').then(m => ({ default: m.Featured })));
 const Services       = lazy(() => import('./components/layout/service').then(m => ({ default: m.Services })));

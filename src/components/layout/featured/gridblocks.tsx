@@ -46,7 +46,7 @@ const StatCard = ({
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    // Also check for .dark class on <html> (if using class-based dark mode)
+   
     const checkDark = () =>
       setIsDark(
         document.documentElement.classList.contains("dark") || mq.matches

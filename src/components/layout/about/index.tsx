@@ -43,7 +43,7 @@ export const CardStack = () => {
     <section
       id="about"
       ref={container}
-      className="relative flex flex-col lg:flex-row lg:gap-10 px-5 lg:px-20"
+      className="relative flex flex-col lg:flex-row lg:gap-10 px-5 lg:px-20 py-20 md:py-28"
       style={{ height: sectionHeight }}
     >
       <h2 className="lg:hidden font-heading text-4xl font-bold mb-8 leading-tight pt-10">
