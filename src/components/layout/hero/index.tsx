@@ -29,7 +29,7 @@ export const Hero = () => {
   return (
     <section
       id="hero"
-      className="min-h-svh pt-20 pb-20 grid place-items-center px-6 relative mt-24 overflow-hidden"
+      className="min-h-svh py-10 grid place-items-center px-6 relative mt-20 overflow-hidden"
     >
       <div className="absolute bg-[#FAF7F6] dark:bg-[#0F0F0E] inset-0 opacity-30 dark:opacity-40 pointer-events-none">
         {shouldLoad3d ? (
